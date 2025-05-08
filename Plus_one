@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        vector<int> ans(digits.size());
+        for (int i=0; i<digits.size(); i++) {
+            ans[i]=digits[i];
+        }
+        int index=digits.size()-1;
+        while (index>=0) {
+            if (ans[index]<9) {
+                ans[index]++;
+                break;
+            }
+            else {
+                ans[index]=0;
+            }
+            index--;
+        }
+        if (ans[0]==0) {
+            vector<int> new_ans;
+            new_ans.push_back(1);
+            for (int i=0; i<ans.size(); i++) {
+                new_ans.push_back(ans[i]);
+            }
+            ans=new_ans;
+        }
+        return ans;
+    }
+};
