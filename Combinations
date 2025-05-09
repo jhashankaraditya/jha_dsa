@@ -1,0 +1,22 @@
+class Solution {
+public:
+    void solve(int n, int k, vector<int> comb, int index, vector<vector<int>> &combinations) {
+        if (index>=k) {
+            combinations.push_back(comb);
+            return;
+        }
+        for (int i=index+1; i<=n-k+index+1; i++) {
+            if (index>0 && i<=comb[index-1])
+                continue;
+            comb[index]=i;
+            solve(n,k,comb,index+1,combinations);
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> combinations;
+        vector<int> comb(k);
+        solve(n,k,comb,0,combinations);
+        return combinations;
+    }
+};
