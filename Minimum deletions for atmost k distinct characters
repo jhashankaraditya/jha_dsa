@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minDeletion(string s, int k) {
+        unordered_map<char,int> letterFreq;
+        for (int i=0; i<s.size(); i++) {
+            letterFreq[s[i]]++;
+        }
+        vector<int> freqHolder;
+        for (auto it:letterFreq) {
+            freqHolder.push_back(it.second);
+        }
+        sort(freqHolder.begin(),freqHolder.end());
+        reverse(freqHolder.begin(),freqHolder.end());
+        int toDelete=0;
+        for (int i=k; i<freqHolder.size(); i++) {
+            toDelete+=freqHolder[i];
+        }
+        return toDelete;
+    }
+};
