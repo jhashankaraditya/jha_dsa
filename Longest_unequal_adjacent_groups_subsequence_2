@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int hamming_distdiff(string word1, string word2) {
+        int diff=0;
+        for (int i=0; i<word1.size(); i++) {
+            if (word1[i]!=word2[i])
+                diff++;
+        }return diff;
+    }
+
+    vector<string> getWordsInLongestSubsequence(vector<string>& words, vector<int>& groups) {
+        int maxlen=0, maxend=-1, n=words.size();
+        vector<int> dp(n,1);
+        vector<int> prev_index(n,-1);
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<i; j++) {
+                if (groups[i]!=groups[j] && words[i].size()==words[j].size() && hamming_distdiff(words[i],words[j])==1) {
+                    if (dp[i]<(dp[j]+1)) {
+                        dp[i]=dp[j]+1;
+                        prev_index[i]=j;
+                    }
+                }
+            }
+            if (dp[i]>maxlen) {
+                maxlen=max(maxlen,dp[i]);
+                maxend=i;
+            }
+        }vector<string> result;
+        do {
+            result.push_back(words[maxend]);
+            maxend=prev_index[maxend];
+        }while (maxend!=-1);
+        reverse(result.begin(),result.end());
+        return result;
+    }
+};
