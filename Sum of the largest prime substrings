@@ -1,0 +1,50 @@
+#define ll long long
+class Solution {
+    bool isPrime(ll int num) {
+        if (num<=1) {
+            return false;
+        } 
+        for (ll int i=2; i<=sqrt(num); i++) {
+            if ((num%i)==0) {
+                return false;
+            }
+        }
+        return true;
+    }
+public:
+    long long sumOfLargestPrimes(string s) {
+        vector<string> subNums;
+        for (ll int i=0; i<s.size(); i++) {
+            string num;
+            for (ll int j=i; j<s.size(); j++) {
+                num+=s[j];
+                subNums.push_back(num);
+            }
+        }
+        vector<ll int> primes;
+        unordered_map<ll int,bool> primeMarked;
+        for (ll int i=0; i<subNums.size(); i++) {
+            ll int currNum=stoll(subNums[i]);
+            if (isPrime(currNum) && !primeMarked[currNum]) {
+                primes.push_back(currNum);
+                primeMarked[currNum]=true;
+                // cout<<primes[primes.size()-1]<<" ";
+            }
+        }
+        sort(primes.begin(),primes.end());
+        ll int sum=0;
+        if (primes.size()<3) {
+            for (ll int i=0; i<primes.size(); i++) {
+                sum+=primes[i];
+            }
+            // cout<<"a "<<" "<<sum<<"\n";
+        }
+        else {
+            for (ll int i=primes.size()-3; i<primes.size(); i++) {
+                sum+=primes[i];
+            }
+            // cout<<"b "<<" "<<sum<<"\n";
+        }
+        return sum;
+    }
+};
