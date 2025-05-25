@@ -1,0 +1,24 @@
+#define ll long long
+class Solution {
+public:
+    ll int calcCost(int len, int k) {
+        if (len<=k) {
+            return 0;
+        }
+        ll int cost=-1;
+        while (len>0) {
+            ll int piece=(len>=k)?k:len;
+            if (cost==-1) {
+                cost=piece;
+            }
+            else cost*=piece;
+            len-=piece;
+        }
+        return cost;
+    }
+    long long minCuttingCost(int n, int m, int k) {
+        ll int cost1=calcCost(n,k);
+        ll int cost2=calcCost(m,k);
+        return cost1+cost2;
+    }
+};
