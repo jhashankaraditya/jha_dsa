@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool checkcycle(unordered_map<int,vector<int>> &adj_list, unordered_map<int,bool> &marked, unordered_map<int,bool> &visited, int node) {
+        marked[node]=true;
+        visited[node]=true;
+        for (auto neighbour:adj_list[node]) {
+            if (!marked[neighbour]) {
+                bool iscyclic=checkcycle(adj_list,marked,visited,neighbour);
+                if (iscyclic) {
+                    return true;
+                }
+            }
+            else if (visited[neighbour]) {
+                return true;
+            }
+        }
+        visited[node]=false;
+        return false;
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int,vector<int>> adj_list;
+        for (int i=0; i<prerequisites.size(); i++) {
+            adj_list[prerequisites[i][0]].push_back(prerequisites[i][1]);
+        }
+        unordered_map<int,bool> marked;
+        unordered_map<int,bool> visited;
+        for (int i=0; i<numCourses; i++) {
+            if (marked[i]) {
+                continue;
+            }
+            bool iscyclic=checkcycle(adj_list,marked,visited,i);
+            if (iscyclic) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
