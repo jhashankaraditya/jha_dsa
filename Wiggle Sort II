@@ -1,0 +1,43 @@
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> big;
+        vector<int> small;
+        vector<int> ans;
+        sort(nums.begin(),nums.end());
+        if (n%2==0) {
+            int i=0;
+            while (i<n/2) {
+                big.push_back(nums[n-i-1]);
+                i++;
+            }
+            while (i<n) {
+                small.push_back(nums[n-i-1]);
+                i++;
+            }
+            for (int i=0; i<n/2; i++) {
+                ans.push_back(small[i]);
+                ans.push_back(big[i]);
+            }
+        }
+        else {
+            int i=0;
+            while (i<n/2) {
+                big.push_back(nums[n-i-1]);
+                i++;
+            }
+            while (i<n) {
+                small.push_back(nums[n-i-1]);
+                i++;
+            }
+            for (int i=0; i<big.size(); i++) {
+                ans.push_back(small[i]);
+                ans.push_back(big[i]);
+            }ans.push_back(small[small.size()-1]);
+        }
+        for (int i=0; i<n; i++) {
+            nums[i]=ans[i];
+        }
+    }
+};
