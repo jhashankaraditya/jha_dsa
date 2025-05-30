@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        int left=0, right=0;
+        unordered_map<int,int> numsFreq;
+        priority_queue<int> maxElement;
+        priority_queue<int,vector<int>,greater<int>> minElement;
+        int maxSubarrayLength=0;
+        while (right<nums.size()) {
+            maxElement.push(nums[right]);
+            minElement.push(nums[right]);
+            numsFreq[nums[right]]++;
+            int maxi=INT_MIN, mini=INT_MAX;
+            while (numsFreq[maxElement.top()]<=0) {
+                maxElement.pop();
+            }
+            while (numsFreq[minElement.top()]<=0) {
+                minElement.pop();
+            }
+            maxi=maxElement.top();
+            mini=minElement.top();
+            while (maxi-mini>limit) {
+                numsFreq[nums[left]]--;
+                left++;
+                while (numsFreq[maxElement.top()]<=0) {
+                    maxElement.pop();
+                }
+                while (numsFreq[minElement.top()]<=0) {
+                    minElement.pop();
+                }
+                maxi=maxElement.top();
+                mini=minElement.top();
+            }
+            maxSubarrayLength=max(maxSubarrayLength,right-left+1);
+            right++;
+        }
+        return maxSubarrayLength;
+    }
+};
