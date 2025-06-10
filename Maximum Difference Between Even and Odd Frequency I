@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxDifference(string s) {
+        unordered_map<char,int> letterFreq;
+        for (int i=0; i<s.size(); i++) {
+            letterFreq[s[i]]++;
+        }
+        int max_odd=0, min_even=INT_MAX;
+        for (auto it:letterFreq) {
+            if (it.second%2==0) {
+                min_even=min(min_even,it.second);
+            }
+            else max_odd=max(max_odd,it.second);
+        }
+        if (min_even==INT_MAX) {
+            return max_odd;
+        }
+        return max_odd-min_even;
+    }
+};
