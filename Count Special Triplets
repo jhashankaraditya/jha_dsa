@@ -1,0 +1,21 @@
+#define mod 1000000007
+class Solution {
+public:
+    int specialTriplets(vector<int>& nums) {
+        unordered_map<int,int> leftFreq;
+        unordered_map<int,int> rightFreq;
+        leftFreq[nums[0]]++;
+        for (int i=nums.size()-1; i>=2; i--) {
+            rightFreq[nums[i]]++;
+        }
+        int ans=0;
+        for (int i=1; i<nums.size()-1; i++) {
+            int req=nums[i]*2;
+            long long int mul=(1LL*leftFreq[req])%mod*(rightFreq[req])%mod;
+            ans=((ans)%mod+(int(mul))%mod)%mod;
+            leftFreq[nums[i]]++;
+            rightFreq[nums[i+1]]--;
+        }
+        return ans;
+    }
+};
