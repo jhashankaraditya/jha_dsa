@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        string columnTitle;
+        while (columnNumber>0) {
+            int col=columnNumber/26, rem=columnNumber%26;
+            if (rem==0) {
+                col--;
+                rem=26;
+            }
+            char letter=('A'+rem-1);
+            columnTitle.push_back(letter);
+            if (columnNumber<=26) {
+                break;
+            }
+            columnNumber=col;
+        }
+        reverse(columnTitle.begin(),columnTitle.end());
+        return columnTitle;
+    }
+};
