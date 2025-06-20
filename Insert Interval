@@ -1,0 +1,62 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>> ansIntervals;
+        if (intervals.size()==0) {
+            ansIntervals.push_back(newInterval);
+            return ansIntervals;
+        }
+        bool left_found=false, right_found=false;
+        int left_idx=0, right_idx=intervals.size()-1;
+        while (left_idx<intervals.size()) {
+            if (newInterval[0]>=intervals[left_idx][0] && newInterval[0]<=intervals[left_idx][1]) {
+                left_found=true;
+                break;
+            }
+            else if (newInterval[0]<=intervals[left_idx][0]) {
+                break;
+            }
+            left_idx++;
+        }
+        while (right_idx>=0) {
+            if (newInterval[1]>=intervals[right_idx][0] && newInterval[1]<=intervals[right_idx][1]) {
+                right_found=true;
+                break;
+            }
+            else if (newInterval[1]>=intervals[right_idx][1]) {
+                break;
+            }
+            right_idx--;
+        }
+        if (left_idx>right_idx) {
+            int index=0;
+            while (index<intervals.size()) {
+                if (index==left_idx) {
+                    ansIntervals.push_back(newInterval);
+                }
+                ansIntervals.push_back(intervals[index]);
+                index++;
+            }
+            if (index==left_idx) {
+                ansIntervals.push_back(newInterval);
+            }
+        }
+        else {
+            int index=0;
+            while (index<intervals.size()) {
+                if (index<left_idx || index>right_idx) {
+                    ansIntervals.push_back(intervals[index]);
+                }
+                else {
+                    vector<int> currInterval(2);
+                    currInterval[0]=min(intervals[left_idx][0],newInterval[0]);
+                    currInterval[1]=max(intervals[right_idx][1],newInterval[1]);
+                    ansIntervals.push_back(currInterval);
+                    index=right_idx;
+                }
+                index++;
+            }    
+        }
+        return ansIntervals;
+    }
+};
