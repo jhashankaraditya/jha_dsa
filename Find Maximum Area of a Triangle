@@ -1,0 +1,45 @@
+#define ll long long
+class Solution {
+public:
+    long long maxArea(vector<vector<int>>& coords) {
+        unordered_map<ll int,ll int> y_max_x;
+        unordered_map<ll int,ll int> y_min_x;
+        unordered_map<ll int,ll int> x_max_y;
+        unordered_map<ll int,ll int> x_min_y;
+        ll int max_x=-1, max_y=-1, min_x=10000000, min_y=10000000;
+        // cout<<"a ";
+        for (ll int i=0; i<coords.size(); i++) {
+            ll int x=coords[i][0], y=coords[i][1];
+            y_max_x[x]=max(y_max_x[x],y);
+            if (y_min_x[x]==0) {
+                y_min_x[x]=y;
+            }
+            else y_min_x[x]=min(y_min_x[x],y);
+            x_max_y[y]=max(x_max_y[y],x);
+            if (x_min_y[y]==0) {
+                x_min_y[y]=x;
+            }
+            else x_min_y[y]=min(x_min_y[y],x);
+            max_x=max(max_x,x);
+            max_y=max(max_y,y);
+            min_x=min(min_x,x);
+            min_y=min(min_y,y);
+        }
+        // cout<<"b ";
+        ll int maxArea=-1;
+        for (ll int i=0; i<=coords.size()-1; i++) {
+            ll int x=coords[i][0], y=coords[i][1];
+            ll int len1=x-min_x, len2=max_x-x, len3=y-min_y, len4=max_y-y;
+            ll int area1=(y_max_x[x]-y_min_x[x])*len1;
+            ll int area2=(y_max_x[x]-y_min_x[x])*len2;
+            ll int area3=(x_max_y[y]-x_min_y[y])*len3;
+            ll int area4=(x_max_y[y]-x_min_y[y])*len4;
+            maxArea=max({maxArea,area1,area2,area3,area4});
+        }
+        // cout<<"c ";
+        if (maxArea<=0) {
+            maxArea=-1;
+        }
+        return maxArea;
+    }
+};
