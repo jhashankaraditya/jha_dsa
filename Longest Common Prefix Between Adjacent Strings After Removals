@@ -1,0 +1,59 @@
+#define ll long long
+class Solution {
+public:
+    vector<int> longestCommonPrefix(vector<string>& words) {
+        if (words.size()<=1) {
+            vector<int> ans;
+            ans.push_back(0);
+            return ans;
+        }
+        vector<int> ans;
+        vector<ll int> commonPrefLength;
+        for (ll int i=0; i<words.size()-1; i++) {
+            ll int len=0, size1=words[i].size(), size2=words[i+1].size(), min_len=min(size1,size2);
+            for (ll int j=0; j<min_len; j++) {
+                if (words[i][j]==words[i+1][j]) {
+                    len++;
+                }
+                else break;
+            }
+            commonPrefLength.push_back(len);
+        }
+        vector<ll int> suffMax(commonPrefLength.size());
+        for (ll int i=suffMax.size()-1; i>=0; i--) {
+            if (i==suffMax.size()-1) {
+                suffMax[i]=commonPrefLength[i];
+            }
+            else suffMax[i]=max(commonPrefLength[i],suffMax[i+1]);
+        }
+        vector<ll int> prefMax(commonPrefLength.size());
+        for (ll int i=0; i<prefMax.size(); i++) {
+            if (i==0) {
+                prefMax[i]=commonPrefLength[i];
+            }
+            else prefMax[i]=max(prefMax[i-1],commonPrefLength[i]);
+        }
+        for (ll int i=0; i<words.size(); i++) {
+            ll int len=0;
+            if (i<suffMax.size()-1) {
+                len=max(len,suffMax[i+1]);
+            }
+            if (i-2>=0) {
+                len=max(len,prefMax[i-2]);
+            }
+            if (i>0 && i<words.size()-1) {
+                ll int len1=0, size1=words[i-1].size(), size2=words[i+1].size(), min_len=min(size1,size2);
+                for (ll int j=0; j<min_len; j++) {
+                    if (words[i-1][j]==words[i+1][j]) {
+                        len1++;
+                    }
+                    else break;
+                }
+                len=max(len,len1);
+            }
+            int len2=len;
+            ans.push_back(len2);
+        }
+        return ans;
+    }
+};
