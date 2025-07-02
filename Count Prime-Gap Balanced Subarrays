@@ -1,0 +1,71 @@
+#define ll long long
+class Solution {
+    vector<ll int> checkPrime(ll int num) {
+        vector<ll int> isPrime(num+1,1);
+        isPrime[0]=0;
+        isPrime[1]=0;
+        for (ll int i=2; i*i<=num; i++) {
+            if (isPrime[i]) {
+                for (ll int j=i*i; j<=num; j+=i) {
+                    isPrime[j]=false;
+                }
+            }
+        }
+        return isPrime;
+    }
+public:
+    int primeSubarray(vector<int>& nums, int k) {
+        ll int n=nums.size();
+        vector<ll int> isPrime=checkPrime(50005);
+        vector<ll int> prefSum(n);
+        prefSum[0]=isPrime[nums[0]];
+        for (ll int i=1; i<n; i++) {
+            prefSum[i]=prefSum[i-1]+isPrime[nums[i]];
+        }
+        vector<ll int> startFrom(n);
+        for (ll int i=0; i<n; i++) {
+            ll int low=i, high=n-1, idx=-1;
+            while (low<=high) {
+                ll int mid=low+(high-low)/2;
+                ll int diff=prefSum[mid];
+                if (i-1>=0) {
+                    diff-=prefSum[i-1];
+                }
+                if (diff>=2) {
+                    idx=mid;
+                    high=mid-1;
+                }
+                else low=mid+1;
+            }
+            startFrom[i]=idx;
+        }
+        ll int ans=0, j=0;
+        multiset<ll int> primeHolder;
+        for (ll int i=0; i<n; i++) {
+            if (startFrom[i]==-1) {
+                break;
+            }
+            while (j<n) {
+                if (isPrime[nums[j]]) {
+                    primeHolder.insert(nums[j]);
+                }
+                if (primeHolder.size()>=2) {
+                    if (*primeHolder.rbegin()-*primeHolder.begin()>k) {
+                        if (isPrime[nums[j]]) {
+                            primeHolder.erase(primeHolder.find(nums[j]));
+                        }
+                        break;
+                    }
+                }
+                j++;
+            }
+            if (j>startFrom[i]) {
+                ans+=(j-startFrom[i]);
+            }
+            if (isPrime[nums[i]]) {
+                primeHolder.erase(primeHolder.find(nums[i]));
+            }
+        }
+        return (int)ans;
+    }
+};
