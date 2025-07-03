@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* findnode(TreeNode* root, TreeNode* node) {
+        if (root==node) {
+            return root;
+        }
+        if (root==NULL) {
+            return NULL;
+        }
+        TreeNode* left=findnode(root->left,node);
+        TreeNode* right=findnode(root->right,node);
+        if (left==NULL && right==NULL) {
+            return NULL;
+        }
+        else if (left!=NULL && right==NULL) {
+            return left;
+        }
+        else {
+            return right;
+        }
+    }
+    TreeNode* findlca(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root==NULL) {
+            return NULL;
+        }
+        TreeNode* p_left_found=findnode(root->left,p);
+        TreeNode* p_right_found=findnode(root->right,p);
+        TreeNode* q_left_found=findnode(root->left,q);
+        TreeNode* q_right_found=findnode(root->right,q);
+        TreeNode* ans;
+        if (p_left_found!=NULL && q_left_found!=NULL) {
+            ans=findlca(root->left,p,q);
+        }
+        else if (p_right_found!=NULL && q_right_found!=NULL) {
+            ans=findlca(root->right,p,q);
+        }
+        else if (root==p || root==q || (p_left_found!=NULL && q_right_found!=NULL)||(p_right_found!=NULL && q_left_found!=NULL)) {
+            ans=root;
+        }
+        return ans;
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        return findlca(root,p,q);
+    }
+};
