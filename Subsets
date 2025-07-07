@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int subsets=pow(2,nums.size())-1;
+        vector<vector<int>> ans;
+        while (subsets>=0) {
+            int index=0, temp_subsets=subsets;
+            vector<int> subset;
+            while (index<nums.size()) {
+                if (temp_subsets&1) {
+                    subset.push_back(nums[index]);
+                }
+                index++;
+                temp_subsets=(temp_subsets>>1);
+            }
+            ans.push_back(subset);
+            subsets--;
+        }
+        return ans;
+    }
+};
