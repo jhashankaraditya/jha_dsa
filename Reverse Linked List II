@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverselist(ListNode* head) {
+        if (head==NULL || head->next==NULL)
+            return head;
+        ListNode* revhead=reverselist(head->next);
+        head->next->next=head;
+        head->next=NULL;
+        return revhead;
+    }
+
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if (head->next==NULL)
+            return head;
+        int count_nodes=1;
+        ListNode* temp=head;
+        ListNode* before_left=NULL;
+        ListNode* left_node=NULL;
+        ListNode* right_node=NULL;
+        ListNode* after_right=NULL;
+        while (temp!=NULL) {
+            if (count_nodes==left-1)
+                before_left=temp;
+            if (count_nodes==left)
+                left_node=temp;
+            if (count_nodes==right)
+                right_node=temp;
+            if (count_nodes==right+1)
+                after_right=temp;
+            count_nodes++;
+            temp=temp->next;
+        }
+        if (before_left)
+            before_left->next=NULL;
+        right_node->next=NULL;
+        ListNode* revnode=reverselist(left_node);
+        if (before_left)
+            before_left->next=right_node;
+        left_node->next=after_right;
+        ListNode* ans;
+        if (left==1)
+            ans=right_node;
+        else ans=head;
+        return ans;
+    }
+};
