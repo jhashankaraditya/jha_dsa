@@ -1,0 +1,21 @@
+#define MOD 1000000007
+#define ll long long
+class Solution {
+public:
+    int countTrapezoids(vector<vector<int>>& points) {
+        unordered_map<ll int,ll int> y_points;
+        map<ll int,bool> y_values;
+        for (ll int i=0; i<points.size(); i++) {
+            ll int x=points[i][0], y=points[i][1];
+            y_points[y]++;
+            y_values[y]=true;
+        }
+        ll int backSum=0, ans=0;
+        for (auto y:y_values) {
+            ll int curr_y=y.first, currPoints=y_points[curr_y], two=2, selectedPoints=(currPoints*(currPoints-1))/two;
+            ans=(ans+(backSum*selectedPoints))%MOD;
+            backSum+=selectedPoints;
+        }
+        return (int)ans;
+    }
+};
