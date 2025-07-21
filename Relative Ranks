@@ -1,0 +1,30 @@
+class Solution {
+    static bool cmp(pair<int,int> &a, pair<int,int> &b) {
+        return a.second>b.second;
+    }
+public:
+    vector<string> findRelativeRanks(vector<int>& score) {
+        vector<pair<int,int>> player_score;
+        for (int i=0; i<score.size(); i++) {
+            player_score.push_back(make_pair(i,score[i]));
+        }
+        sort(player_score.begin(),player_score.end(),cmp);
+        vector<string> pos(score.size());
+        for (int i=0; i<player_score.size(); i++) {
+            int find_pos=player_score[i].first;
+            if (i==0) {
+                pos[find_pos]="Gold Medal";
+            }
+            else if (i==1) {
+                pos[find_pos]="Silver Medal";
+            }
+            else if (i==2) {
+                pos[find_pos]="Bronze Medal";
+            }
+            else {
+                pos[find_pos]=to_string(i+1);
+            }
+        }
+        return pos;
+    }
+};
