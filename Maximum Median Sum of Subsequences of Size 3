@@ -1,0 +1,14 @@
+#define ll long long
+class Solution {
+public:
+    long long maximumMedianSum(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        ll int left=0, right=nums.size()-2, sum=0;
+        while (left<right) {
+            sum+=nums[right];
+            right-=2;
+            left++;
+        }
+        return sum;
+    }
+};
