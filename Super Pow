@@ -1,0 +1,27 @@
+class Solution {
+    int BinExp(long long a, long long b) {
+	int ans=1;
+	while (b>0) {
+		if (b&1) {
+			ans=(ans*1LL*a)%1337;
+		}
+		a=(a*1LL*a)%1337;
+		b=(b>>1);
+	}
+	return ans;
+}
+
+public:
+    int superPow(int a, vector<int>& b) {
+        int b_new=0, fact=1;
+        for (int i=b.size()-1; i>=0; i--) {
+            int mult=((fact)%1140*b[i])%1140;
+            if (i==0 && b_new+mult==1140) {
+                b_new+=mult;
+            }
+            else b_new=(b_new+mult)%1140;
+            fact=(fact*10)%1140;
+        }
+        return BinExp(a,b_new);
+    }
+};
