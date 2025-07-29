@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string s1, string s2) {
+        unordered_map<string,int> word_freq;
+        string word;
+        for (int i=0; i<s1.size(); i++) {
+            if (s1[i]!=' ') {
+                word.push_back(s1[i]);
+            }
+            else {
+                word_freq[word]++;
+                word="";
+            }
+        }
+        if (word.size()>0) {
+            word_freq[word]++;
+            word="";
+        }
+        for (int i=0; i<s2.size(); i++) {
+            if (s2[i]!=' ') {
+                word.push_back(s2[i]);
+            }
+            else {
+                word_freq[word]++;
+                word="";
+            }
+        }
+        if (word.size()>0) {
+            word_freq[word]++;
+            word="";
+        }
+        vector<string> uncommon;
+        for (auto it:word_freq) {
+            if (it.second==1) {
+                uncommon.push_back(it.first);
+            }
+        }
+        return uncommon;
+    }
+};
