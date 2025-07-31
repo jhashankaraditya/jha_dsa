@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int solvetab(vector<int>& coins, int amount) {
+        vector<vector<int>> dp(amount+1,vector<int>(coins.size()+1,0));
+        for (int i=0; i<dp.size(); i++) {
+            dp[i][dp[0].size()-1]=1e9;
+        }
+        dp[0][dp[0].size()-1]=0;
+        for (int target=0; target<=amount; target++) {
+            for (int index=coins.size()-1; index>=0; index--) {
+                int not_take=0+dp[target][index+1];
+                int take=1e9;
+                if (target-coins[index]>=0) {
+                    take=1+dp[target-coins[index]][index];
+                }
+                dp[target][index]=min(take,not_take);
+            }
+        }
+        return dp[amount][0];
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        int coins_req=solvetab(coins,amount);
+        if (coins_req==1e9) {
+            return -1;
+        }
+        return coins_req;
+    }
+};
