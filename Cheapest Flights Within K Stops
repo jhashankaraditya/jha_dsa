@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        int cheapest_price=INT_MAX;
+        set<vector<int>> price_distance_stop;
+        unordered_map<int,vector<pair<int,int>>> adj_list;
+        for (int i=0; i<flights.size(); i++) {
+            adj_list[flights[i][0]].push_back({flights[i][1],flights[i][2]});
+        }
+        // unordered_map<int,bool> stop_marked;
+        price_distance_stop.insert({0,0,src});
+        while (!price_distance_stop.empty()) {
+            auto top=*(price_distance_stop.begin());
+            price_distance_stop.erase(price_distance_stop.begin());
+            // stop_marked[top[2]]=true;
+            if (top[1]>k+1) {
+                continue;
+            }
+            if (top[0]>cheapest_price) {
+                continue;
+            }
+            if (top[2]==dst) {
+                cheapest_price=min(cheapest_price,top[0]);
+            }
+            for (auto it:adj_list[top[2]]) {
+                vector<int> pds;
+                pds.push_back(top[0]+it.second);
+                pds.push_back(top[1]+1);
+                pds.push_back(it.first);
+                price_distance_stop.insert(pds);
+            }
+        }
+        if (cheapest_price==INT_MAX) {
+            return -1;
+        }
+        return cheapest_price;
+    }
+};
