@@ -1,0 +1,33 @@
+#define ll long long
+class Solution {
+public:
+    int earliestFinishTime(vector<int>& landStartTime, vector<int>& landDuration, vector<int>& waterStartTime, vector<int>& waterDuration) {
+        int ln=landStartTime.size(), wn=waterStartTime.size();
+        vector<ll int> landEndTime(ln);
+        vector<ll int> waterEndTime(wn);
+        for (ll int i=0; i<ln; i++) {
+            landEndTime[i]=landStartTime[i]+landDuration[i];
+        }
+        for (ll int i=0; i<wn; i++) {
+            waterEndTime[i]=waterStartTime[i]+waterDuration[i];
+        }
+        ll int minTime=INT_MAX;
+        for (ll int i=0; i<ln; i++) {
+            for (ll int j=0; j<wn; j++) {
+                if (landEndTime[i]>=waterStartTime[j]) {
+                    minTime=min(minTime,landEndTime[i]+waterDuration[j]);
+                }
+                else minTime=min(minTime,waterEndTime[j]);
+            }
+        }
+        for (ll int i=0; i<wn; i++) {
+            for (ll int j=0; j<ln; j++) {
+                if (waterEndTime[i]>=landStartTime[j]) {
+                    minTime=min(minTime,waterEndTime[i]+landDuration[j]);
+                }
+                else minTime=min(minTime,landEndTime[j]);
+            }
+        }
+        return minTime;
+    }
+};
