@@ -1,0 +1,40 @@
+#define ll long long
+class Solution {
+public:
+    bool isTrionic(vector<int>& nums) {
+        ll int n=nums.size();
+        vector<ll int> a(n);
+        for (ll int i=0; i<n; i++) {
+            a[i]=nums[i];
+        }
+        for (ll int i=1; i<n-2; i++) {
+            for (ll int j=i+1; j<n-1; j++) {
+                bool inc1=true;
+                for (ll int k=0; k<i; k++) {
+                    if (a[k]>=a[k+1]) {
+                        inc1=false;
+                        break;
+                    }
+                }
+                bool dec=true;
+                for (ll int k=i; k<j; k++) {
+                    if (a[k]<=a[k+1]) {
+                        dec=false;
+                        break;
+                    }
+                }
+                bool inc2=true;
+                for (ll int k=j; k<n-1; k++) {
+                    if (a[k]>=a[k+1]) {
+                        inc2=false;
+                        break;
+                    }
+                }
+                if (inc1 && dec && inc2) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
