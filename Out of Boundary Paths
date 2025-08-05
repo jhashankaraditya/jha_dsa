@@ -1,0 +1,35 @@
+#define ll long long
+class Solution {
+    ll int solvemem(ll int m, ll int n, ll int maxMove, ll int curr_x, ll int curr_y, vector<vector<vector<int>>> &dp) {
+        if (maxMove==0) {
+            if ((curr_x<0 || curr_x>=m) || (curr_y<0 || curr_y>=n)) {
+                return 1;
+            }
+            return 0;
+        }
+        if ((curr_x<0 || curr_x>=m) || (curr_y<0 || curr_y>=n)) {
+            return 1;
+        }
+        if (dp[maxMove][curr_x][curr_y]!=-1) {
+            return dp[maxMove][curr_x][curr_y];
+        }
+        vector<ll int> del_row={-1,0,1,0};
+        vector<ll int> del_col={0,1,0,-1};
+        ll int paths=0;
+        for (ll int i=0; i<4; i++) {
+            ll int new_row=del_row[i]+curr_x;
+            ll int new_col=del_col[i]+curr_y;
+            ll int new_paths=solvemem(m,n,maxMove-1,new_row,new_col,dp);
+            paths=(paths+new_paths)%(1000000007);
+        }
+        return dp[maxMove][curr_x][curr_y]=paths;
+    }
+public:
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        if ((startRow<0 || startRow>=m) && (startColumn<0 || startColumn>=n)) {
+            return 0;
+        }
+        vector<vector<vector<int>>> dp(maxMove+1,vector<vector<int>>(m,vector<int>(n,-1)));
+        return solvemem(m,n,maxMove,startRow,startColumn,dp);
+    }
+};
