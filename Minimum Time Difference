@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        int n=timePoints.size(), min_time_diff=INT_MAX;
+        sort(timePoints.begin(),timePoints.end());
+        for (int i=0; i<n-1; i++) {
+            int time_diff=0;
+            string time1=timePoints[i], time2=timePoints[i+1];
+            string hour1=time1.substr(0,2), hour2=time2.substr(0,2), min1=time1.substr(3,2), min2=time2.substr(3,2);
+            int hour1_int=stoi(hour1);
+            int hour2_int=stoi(hour2);
+            int min1_int=stoi(min1);
+            int min2_int=stoi(min2);
+            if (min2_int>=min1_int) {
+                time_diff=(hour2_int-hour1_int)*60+(min2_int-min1_int);
+            }
+            else {
+                time_diff=(60+min2_int-min1_int)+(hour2_int-hour1_int-1)*60;
+            }
+            min_time_diff=min(min_time_diff,time_diff);
+        }
+        string time1=timePoints[n-1], time2=timePoints[0];
+        string hour1=time1.substr(0,2), hour2=time2.substr(0,2), min1=time1.substr(3,2), min2=time2.substr(3,2);
+        int hour1_int=stoi(hour1);
+        int hour2_int=stoi(hour2);
+        int min1_int=stoi(min1);
+        int min2_int=stoi(min2);
+        hour2_int+=24;
+        int time_diff=0;
+        if (min2_int>=min1_int) {
+            time_diff=(hour2_int-hour1_int)*60+(min2_int-min1_int);
+        }
+        else {
+            time_diff=(60+min2_int-min1_int)+(hour2_int-hour1_int-1)*60;
+        }
+        min_time_diff=min(min_time_diff,time_diff);
+        return min_time_diff;
+    }
+};
