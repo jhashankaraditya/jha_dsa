@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool ishappy(int n, unordered_map<int,bool> &marked) {
+        if (marked[n]) {
+            return false;
+        }
+        if (n==1) {
+            return true;
+        }
+        marked[n]=true;
+        int num=0;
+        while (n>0) {
+            int digit=n%10;
+            num+=digit*digit;
+            n/=10;
+        }
+        return ishappy(num,marked);
+    }
+    bool isHappy(int n) {
+        unordered_map<int,bool> marked;
+        return ishappy(n,marked);
+    }
+};
