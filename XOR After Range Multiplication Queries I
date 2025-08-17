@@ -1,0 +1,20 @@
+#define ll long long
+#define MOD 1000000007
+class Solution {
+public:
+    int xorAfterQueries(vector<int>& nums, vector<vector<int>>& queries) {
+        for (ll int i=0; i<queries.size(); i++) {
+            ll int start=queries[i][0], end=queries[i][1], step=queries[i][2], mul=queries[i][3], idx=start;
+            while (idx<=end) {
+                ll int mulVal=nums[idx]*mul;
+                nums[idx]=mulVal%MOD;
+                idx+=step;
+            }
+        }
+        ll int xorVal=0;
+        for (ll int i=0; i<nums.size(); i++) {
+            xorVal^=nums[i];
+        }
+        return (int)xorVal;
+    }
+};
