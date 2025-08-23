@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,bool> nums1_marked;
+        unordered_map<int,bool> nums2_marked;
+        for (int i=0; i<nums1.size(); i++) {
+            nums1_marked[nums1[i]]=true;
+        }
+        for (int i=0; i<nums2.size(); i++) {
+            nums2_marked[nums2[i]]=true;
+        }
+        vector<int> ans;
+        for (auto it:nums1_marked) {
+            for (auto jt:nums2_marked) {
+                if (it.first==jt.first) {
+                    ans.push_back(it.first);
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
