@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void solve(vector<vector<int>>& rooms, int room, vector<bool> &visited) {
+        visited[room]=true;
+        for (int i=0; i<rooms[room].size(); i++) {
+            if (!visited[rooms[room][i]])
+                solve(rooms,rooms[room][i],visited);
+        }
+    }
+
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        int n=rooms.size();
+        vector<bool> visited(n);
+        unordered_map<int,list<int>> adj_list;
+        for (int i=0; i<rooms.size(); i++) {
+            for (int j=0; j<rooms[i].size(); j++) {
+                adj_list[i].push_back(rooms[i][j]);
+            }
+        }
+        solve(rooms,0,visited);
+        bool ans=true;
+        for (int i=0; i<n; i++) {
+            if (!visited[i])
+                ans=false;
+        }return ans;
+    }
+};
