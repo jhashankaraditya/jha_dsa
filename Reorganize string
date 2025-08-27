@@ -1,0 +1,42 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        unordered_map<char,int> letter_freq;
+        for (int i=0; i<s.size(); i++)
+            letter_freq[s[i]]++;
+        priority_queue<int> pq;
+        for (auto it:letter_freq)
+            pq.push(it.second);
+        vector<char> dist_letters;
+        unordered_map<char,bool> letter_marked;
+        while (!pq.empty()) {
+            int freq=pq.top();
+            pq.pop();
+            for (auto it:letter_freq) {
+                if (!letter_marked[it.first] && it.second==freq) {
+                    dist_letters.push_back(it.first);
+                    letter_marked[it.first]=true;
+                    break;
+                }
+            }
+        }vector<char> ans_distributed(s.size());
+        int index=0;
+        for (int i=0; i<dist_letters.size(); i++) {
+            int freq=letter_freq[dist_letters[i]];
+            while (freq--) {
+                ans_distributed[index]=dist_letters[i];
+                index+=2;
+                if (index>=s.size())
+                    index=1;
+            }
+        }string ans;
+        for (int i=0; i<ans_distributed.size(); i++)
+            ans+=ans_distributed[i];
+        int n=ans.size();
+        for (int i=0; i<s.size()-1; i++) {
+            if (ans[i]==ans[i+1])
+                return "";
+        }
+        return ans;
+    }
+};
