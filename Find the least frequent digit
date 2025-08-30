@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int getLeastFrequentDigit(int n) {
+        vector<int> digitFreq(10,0);
+        while (n>0) {
+            int digit=(n%10);
+            n/=10;
+            digitFreq[digit]++;
+        }
+        int minFreq=INT_MAX, minNum=-1;
+        for (int i=9; i>=0; i--) {
+            if (digitFreq[i]>0 && minFreq>=digitFreq[i]) {
+                minFreq=digitFreq[i];
+                minNum=i;
+            }
+        }
+        return minNum;
+    }
+};
