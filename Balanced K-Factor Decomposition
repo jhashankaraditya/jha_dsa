@@ -1,0 +1,40 @@
+class Solution {
+    void calcMinDiff(int num, int k, vector<int> factors, vector<int> &finalFactors, int &minDiff) {
+        if (k==1) {
+            if (num>=1) {
+                factors.push_back(num);
+                int maxi=INT_MIN, mini=INT_MAX;
+                for (int i=0; i<factors.size(); i++) {
+                    maxi=max(maxi,factors[i]);
+                    mini=min(mini,factors[i]);
+                }
+                if (maxi-mini<minDiff) {
+                    finalFactors=factors;
+                    minDiff=min(minDiff,maxi-mini);
+                }
+                factors.pop_back();
+            }
+            return;
+        }
+        for (int i=1; i<=sqrt(num); i++) {
+            if (num%i==0) {
+                factors.push_back(num/i);
+                calcMinDiff(i,k-1,factors,finalFactors,minDiff);
+                factors.pop_back();
+                if (i!=num/i) {
+                    factors.push_back(i);
+                    calcMinDiff(num/i,k-1,factors,finalFactors,minDiff);
+                    factors.pop_back();
+                }
+            }
+        }
+    }
+public:
+    vector<int> minDifference(int n, int k) {
+        int minDiff=INT_MAX;
+        vector<int> finalFactors;
+        vector<int> factors;
+        calcMinDiff(n,k,factors,finalFactors,minDiff);
+        return finalFactors;
+    }
+};
