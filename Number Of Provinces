@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void bfstraverse(unordered_map<int,list<int>> &adj_list, unordered_map<int,bool> &visited, int node) {
+        visited[node]=true;
+        queue<int> q;
+        q.push(node);
+        while (!q.empty()) {
+            int frontnode=q.front();
+            q.pop();
+            for (auto neighbour:adj_list[frontnode]) {
+                if (!visited[neighbour]) {
+                    visited[neighbour]=true;
+                    q.push(neighbour);
+                }
+            }
+        }
+    }
+
+    int bfs(int n, unordered_map<int,list<int>> &adj_list) {
+        unordered_map<int,bool> visited;
+        int provinces=0;
+        for (int i=0; i<n; i++) {
+            if (!visited[i]) {
+                provinces++;
+                bfstraverse(adj_list,visited,i);
+            }
+        }return provinces;
+    }
+
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        unordered_map<int,list<int>> adj_list;
+        int n=isConnected.size();
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                if (i!=j && isConnected[i][j]==1) {
+                    adj_list[i].push_back(j);
+                }
+            }
+        }
+        return bfs(n,adj_list);
+    }
+};
