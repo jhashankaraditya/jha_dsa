@@ -1,0 +1,26 @@
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int sl=s.length(), tl=t.length();
+        if (sl==0) {
+            return true;
+        }
+        if (tl==0) {
+            return false;
+        }
+        if (tl<sl) {
+            return false;
+        }
+        int s_idx=0;
+        for (int i=0; i<tl; i++) {
+            char s_letter=s.charAt(s_idx);
+            char t_letter=t.charAt(i);
+            if (s_letter==t_letter) {
+                s_idx++;
+            }
+            if (s_idx>=sl) {
+                break;
+            }
+        }
+        return s_idx>=sl;
+    }
+}
