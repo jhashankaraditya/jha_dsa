@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int minOperations(string s) {
+        int maxOps=0;
+        for (int i=0; i<s.size(); i++) {
+            if (s[i]=='a') {
+                continue;
+            }
+            int ops=26-(s[i]-'a');
+            maxOps=max(maxOps,ops);
+        }
+        return (maxOps%26);
+    }
+};
