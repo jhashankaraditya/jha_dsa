@@ -1,0 +1,27 @@
+class Solution {
+    public String reverseStr(String s, int k) {
+        int index=0, n=s.length();
+        String ans="";
+        Boolean reverse=true;
+        while (index<n) {
+            int lastIdx=-1;
+            if (index+k<n) {
+                lastIdx=index+k-1;
+            }
+            else lastIdx=n-1;
+            if (reverse) {
+                for (int i=lastIdx; i>=index; i--) {
+                    ans=ans+s.charAt(i);
+                }
+            }
+            else {
+                for (int i=index; i<=lastIdx; i++) {
+                    ans=ans+s.charAt(i);
+                }
+            }
+            index+=k;
+            reverse=!reverse;
+        }
+        return ans;
+    }
+}
