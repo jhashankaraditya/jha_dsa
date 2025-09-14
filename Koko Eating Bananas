@@ -1,0 +1,61 @@
+class Solution {
+public:
+    long long optimumspeed(vector<int> &piles, int h, int s, int e) {
+        if (s>e)
+            return -1;
+        if (s==e) {
+            long long time=0;
+            for (int i=0; i<piles.size(); i++) {
+                time+=piles[i]/s;
+                if (piles[i]%s)
+                    time++;
+            }
+            if (time<=h)
+                return s;
+            else return -1;
+        }
+        if (e==s+1) {
+            long long time1=0;
+            for (int i=0; i<piles.size(); i++) {
+                time1+=piles[i]/s;
+                if (piles[i]%s)
+                    time1++;
+            }
+            long long time2=0;
+            for (int i=0; i<piles.size(); i++) {
+                time2+=piles[i]/e;
+                if (piles[i]%e)
+                    time2++;
+            }
+            if (time1<=h) return s;
+            else if (time2<=h) return e;
+            else return -1;
+        }
+        int mid=s+(e-s)/2;
+        long long time=0;
+        for (int i=0; i<piles.size(); i++) {
+            time+=piles[i]/mid;
+            if (piles[i]%mid)
+                time++;
+        }long long ans;
+        if (time>h)
+            ans=optimumspeed(piles,h,mid,e);
+        else ans=optimumspeed(piles,h,s,mid);
+        return ans;
+    }
+
+    int minEatingSpeed(vector<int>& piles, int h) {
+        if (piles.size()==1) {
+            int time=piles[0]/h;
+            if (piles[0]%h)
+                time++;
+            return time;
+        }
+        int maxi=INT_MIN, mini=INT_MAX;
+        for (int i=0; i<piles.size(); i++) {
+            maxi=max(maxi,piles[i]);
+            mini=min(mini,piles[i]);
+        }
+        return optimumspeed(piles,h,1,maxi);
+    }
+};
