@@ -1,0 +1,42 @@
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        map<string,bool> root_present;
+        for (int i=0; i<dictionary.size(); i++) {
+            root_present[dictionary[i]]=1;
+        }
+        queue<string> q;
+        string word;
+        for (int i=0; i<sentence.size(); i++) {
+            if (sentence[i]!=' ') {
+                word.push_back(sentence[i]);
+            }
+            if (i==sentence.size()-1 || sentence[i+1]==' ') {
+                q.push(word);
+                word="";
+                int index=i+1;
+                while (index+1<sentence.size() && sentence[index+1]==' ') {
+                    index++;
+                }
+                i=index;
+            }
+        }
+        string ans;
+        while (!q.empty()) {
+            string word=q.front();
+            q.pop();
+            string pref;
+            for (int i=0; i<word.size(); i++) {
+                pref.push_back(word[i]);
+                if (root_present[pref]) {
+                    break;
+                }
+            }
+            ans+=pref;
+            if (!q.empty()) {
+                ans.push_back(' ');
+            }
+        }
+        return ans;
+    }
+};
