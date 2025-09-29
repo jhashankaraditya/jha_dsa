@@ -1,0 +1,37 @@
+#define ll long long
+class Solution {
+public:
+    long long splitArray(vector<int>& nums) {
+        ll int left_inc_end=0, right_inc_end=nums.size()-1;
+        for (int i=1; i<nums.size(); i++) {
+            if (nums[i]>nums[i-1]) {
+                left_inc_end=i;
+            }
+            else break;
+        }
+        for (int i=nums.size()-2; i>=0; i--) {
+            if (nums[i]>nums[i+1]) {
+                right_inc_end=i;
+            }
+            else break;
+        }
+        ll int leftSum=0, rightSum=0, minDiff=1e18;
+        if (left_inc_end<right_inc_end-1) {
+            return -1;
+        }
+        for (ll int i=0; i<right_inc_end; i++) {
+            leftSum+=nums[i];
+        }
+        for (ll int i=right_inc_end; i<nums.size(); i++) {
+            rightSum+=nums[i];
+        }
+        minDiff=abs(leftSum-rightSum);
+        for (ll int i=right_inc_end; i<=left_inc_end; i++) {
+            leftSum+=nums[i];
+            rightSum-=nums[i];
+            ll int diff=abs(leftSum-rightSum);
+            minDiff=min(minDiff,diff);
+        }
+        return minDiff;
+    }
+};
