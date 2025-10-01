@@ -1,0 +1,16 @@
+#define ll long long
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        ll int num=sqrt(c);
+        while (num>=0) {
+            ll int diff=c-(num*num);
+            ll int diff_sqrt=sqrt(diff);
+            if (diff_sqrt*diff_sqrt==diff) {
+                return 1;
+            }
+            num--;
+        }
+        return 0;
+    }
+};
