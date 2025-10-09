@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int solvespace(vector<int> &cost) {
+        int curr=0, first=0, second=0;
+        for (int index=cost.size()-1; index>=0; index--) {
+            curr=cost[index]+min(first,second);
+            second=first;
+            first=curr;
+        }
+        return min(first,second);
+    }
+    int minCostClimbingStairs(vector<int>& cost) {
+        return solvespace(cost);
+    }
+};
