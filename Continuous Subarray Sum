@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        if (nums.size()<2) {
+            return false;
+        }
+        vector<int> prefSum(nums.size());
+        for (int i=0; i<nums.size(); i++) {
+            prefSum[i]+=nums[i];
+        }
+        for (int i=1; i<nums.size(); i++) {
+            prefSum[i]+=prefSum[i-1];
+        }
+        unordered_map<int,int> sumMarked;
+        sumMarked[0]++;
+        int subarrays=0;
+        for (int i=0; i<nums.size(); i++) {
+            prefSum[i]=(prefSum[i]%k);
+            if (i>0) {
+                if (i>0 && prefSum[i]==prefSum[i-1]) {
+                    subarrays+=(sumMarked[prefSum[i]]-1);
+                }
+                else subarrays+=(sumMarked[prefSum[i]]);
+            }
+            sumMarked[prefSum[i]]++;
+        }
+        return subarrays;
+    }
+};
