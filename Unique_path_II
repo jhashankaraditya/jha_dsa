@@ -1,0 +1,54 @@
+class Solution {
+public:
+    bool issafe(int newx, int newy, vector<vector<int>>& grid, vector<vector<bool>>& visited) {
+        bool safe;
+        if (newx>=0 && newx<grid.size() && newy>=0 && newy<grid[0].size() && grid[newx][newy]==0 && visited[newx][newy]==false)
+            safe=true;
+        else safe=false;
+        return safe;
+    }
+
+    // int solverec(vector<vector<int>>& grid, vector<vector<bool>>& visited, int row, int col) {
+    //     if (row==grid.size()-1 && col==grid[0].size()-1)
+    //         return 1;
+    //     visited[row][col]=true;
+    //     //down
+    //     int down=0;
+    //     if (issafe(row+1,col,grid,visited))
+    //         down=solverec(grid,visited,row+1,col);
+    //     //right
+    //     int right=0;
+    //     if (issafe(row,col+1,grid,visited))
+    //         right=solverec(grid,visited,row,col+1);
+    //     visited[row][col]=false;
+    //     return down+right;
+    // }
+
+    int solvemem(vector<vector<int>>& grid, vector<vector<bool>>& visited, int row, int col, vector<vector<int>> &dp) {
+        if (row==grid.size()-1 && col==grid[0].size()-1)
+            return 1;
+        if (dp[row][col]!=-1)
+            return dp[row][col];
+        visited[row][col]=true;
+        //down
+        int down=0;
+        if (issafe(row+1,col,grid,visited))
+            down=solvemem(grid,visited,row+1,col,dp);
+        //right
+        int right=0;
+        if (issafe(row,col+1,grid,visited))
+            right=solvemem(grid,visited,row,col+1,dp);
+        visited[row][col]=false;
+        dp[row][col]=down+right;
+        return dp[row][col];
+    }
+
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        if (obstacleGrid[0][0]==1)
+            return 0;
+        vector<vector<bool>> visited(obstacleGrid.size(),vector<bool>(obstacleGrid[0].size(),false));
+        // return solverec(obstacleGrid,visited,0,0);
+        vector<vector<int>> dp(obstacleGrid.size(),vector<int>(obstacleGrid[0].size(),-1));
+        return solvemem(obstacleGrid,visited,0,0,dp);
+    }
+};
