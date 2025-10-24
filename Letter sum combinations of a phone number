@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<string> phoneletters(string digits, int index, string words, unordered_map<int,string> m, vector<string> ans) {
+        //vector<string> ans;
+        if (index>=digits.size()) {
+            ans.push_back(words);
+            return ans;
+        }
+        int digit=digits[index]-'0';
+        string combination=m[digit];
+        for (int i=0; i<combination.size(); i++) {
+            words.push_back(combination[i]);
+            ans=phoneletters(digits,index+1,words,m,ans);
+            words.pop_back();
+        }return ans;
+    }
+
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        if (digits.size()==0)
+            return ans;
+        unordered_map<int,string> mapping;
+        mapping[2]="abc";
+        mapping[3]="def";
+        mapping[4]="ghi";
+        mapping[5]="jkl";
+        mapping[6]="mno";
+        mapping[7]="pqrs";
+        mapping[8]="tuv";
+        mapping[9]="wxyz";
+        string words="";
+        return phoneletters(digits,0,words,mapping,ans);
+    }
+};
