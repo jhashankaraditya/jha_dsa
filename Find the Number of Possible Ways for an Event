@@ -1,0 +1,29 @@
+#define mod 1000000007
+#define ll long long
+class Solution {
+public:
+    int numberOfWays(int n, int x, int y) {
+        ll int x1=x, y1=y;
+        vector<vector<ll int>> dp(n+1,vector<ll int>(x+1));
+        for (ll int i=1; i<=n; i++) {
+            dp[i][1]=x1;
+        }
+        for (ll int i=1; i<=n; i++) {
+            for (ll int j=2; j<=x1; j++) {
+                ll int val1=dp[i-1][j];
+                ll int val2=dp[i-1][j-1];
+                dp[i][j]=((val1*j)%mod+(val2*(x1-(j-1)))%mod)%mod;
+            }
+        }
+        ll int ways=0, mul=1;
+        for (ll int i=1; i<=x1; i++) {
+            mul=(mul*y1)%mod;
+            ll int leftVal=(dp[n][i]%mod);
+            ll int rightVal=(mul%mod);
+            ll int toAdd=(leftVal*rightVal)%mod;
+            ways=(ways%mod+toAdd%mod)%mod;
+        }
+        ways=(ways%mod);
+        return (int)ways;
+    }
+};
