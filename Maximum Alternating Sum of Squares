@@ -1,0 +1,27 @@
+#define ll long long
+class Solution {
+public:
+    long long maxAlternatingSum(vector<int>& nums) {
+        ll int score=0, n=nums.size();
+        for (ll int i=0; i<n; i++) {
+            if (nums[i]<0) {
+                nums[i]*=(-1);
+            }
+        }
+        sort(nums.begin(),nums.end());
+        ll int left=0, right=n-1;
+        bool big=1;
+        while (left<=right) {
+            if (big) {
+                score+=(nums[right]*nums[right]);
+                right--;
+            }
+            else {
+                score-=(nums[left]*nums[left]);
+                left++;
+            }
+            big=!big;
+        }
+        return score;
+    }
+};
