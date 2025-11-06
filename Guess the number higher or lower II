@@ -1,0 +1,29 @@
+class Solution {
+public:
+    // int solverec(int low, int high) {
+    //     if (low>=high)
+    //         return 0;
+    //     int money=INT_MAX;
+    //     for (int i=low; i<=high; i++) {
+    //         money=min(money,(i+max(solverec(low,i-1),solverec(i+1,high))));
+    //     }return money;
+    // }
+
+    int solvemem(int low, int high, vector<vector<int>> &dp) {
+        if (low>=high)
+            return 0;
+        if (dp[low][high]!=-1)
+            return dp[low][high];
+        int money=INT_MAX;
+        for (int i=low; i<=high; i++) {
+            money=min(money,(i+max(solvemem(low,i-1,dp),solvemem(i+1,high,dp))));
+        }dp[low][high]=money;
+        return dp[low][high];
+    }
+
+    int getMoneyAmount(int n) {
+        // return solverec(1,n);
+        vector<vector<int>> dp(n+2,vector<int>(n+2,-1));
+        return solvemem(1,n,dp);
+    }
+};
