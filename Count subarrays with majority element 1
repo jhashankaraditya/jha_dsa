@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int countMajoritySubarrays(vector<int>& nums, int target) {
+        int subarrays=0, n=nums.size();
+        for (int i=0; i<n; i++) {
+            unordered_map<int,int> numFreq;
+            int maxFreq=0, maxNum=-1;
+            for (int j=i; j<n; j++) {
+                numFreq[nums[j]]++;
+                if (numFreq[nums[j]]>maxFreq) {
+                    maxFreq=numFreq[nums[j]];
+                    maxNum=nums[j];
+                }
+                if (maxNum==target) {
+                    int subarrayLen=(j-i+1);
+                    if (maxFreq*2>subarrayLen) {
+                        subarrays++;
+                    }
+                }
+            }
+        }
+        return subarrays;
+    }
+};
