@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxPathScore(vector<vector<int>>& grid, int k) {
+        int n=grid.size(), m=grid[0].size();
+        vector<vector<vector<int>>> dp(n,vector<vector<int>>(m,vector<int>(k+1,-1)));
+        dp[0][0][0]=0;
+        vector<int> scoreChange={0,1,2};
+        vector<int> costChange={0,1,1};
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<m; j++) {
+                for (int costUsed=0; costUsed<=k; costUsed++) {
+                    if (dp[i][j][costUsed]==-1) {
+                        continue;
+                    }
+                    if (i+1<n) {
+                        int newCost=costUsed+costChange[grid[i+1][j]];
+                        if (newCost<=k) {
+                            int newScore=dp[i][j][costUsed]+scoreChange[grid[i+1][j]];
+                            dp[i+1][j][newCost]=max(dp[i+1][j][newCost],newScore);
+                        }
+                    }
+                    if (j+1<m) {
+                        int newCost=costUsed+costChange[grid[i][j+1]];
+                        if (newCost<=k) {
+                            int newScore=dp[i][j][costUsed]+scoreChange[grid[i][j+1]];
+                            dp[i][j+1][newCost]=max(dp[i][j+1][newCost],newScore);
+                        }
+                    }
+                }
+            }
+        }
+        int maxScore=-1;
+        for (int i=0; i<=k; i++) {
+            maxScore=max(maxScore,dp[n-1][m-1][i]);
+        }
+        return maxScore;
+    }
+};
