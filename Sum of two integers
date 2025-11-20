@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int getSum(int a, int b) {
+        vector<int> nums(4001);
+        for (int i=0; i<=4000; i++) {
+            nums[i]=i-2000;
+        }
+        int pos_a=2000+a;
+        if (b>0) {
+            while (b--) 
+                pos_a++;
+        }
+        else if (b<0) {
+            while (b<0) {
+                pos_a--;
+                b++;
+            }
+        }
+        return nums[pos_a];
+    }
+};
