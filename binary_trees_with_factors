@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        vector<long> dp(arr.size(),1);
+        sort(arr.begin(),arr.end());
+        unordered_map<int,bool> present;
+        for (int i=0; i<arr.size(); i++)
+            present[arr[i]]=true;
+        unordered_map<int,int> nums_indices;
+        for (int i=0; i<arr.size(); i++)
+            nums_indices[arr[i]]=i;
+        for (int i=1; i<arr.size(); i++) {
+            for (int j=i-1; j>=0; j--) {
+                if (arr[i]%arr[j]==0) {
+                    if (present[arr[i]/arr[j]])
+                        dp[i]=(dp[i]+dp[j]*dp[nums_indices[arr[i]/arr[j]]])%(1000000007);
+                }
+            }
+        }int total_trees=0;
+        for (int i=0; i<dp.size(); i++)
+            total_trees=(total_trees+dp[i])%(1000000007);
+        return total_trees;
+    }
+};
