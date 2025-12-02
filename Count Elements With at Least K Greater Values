@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int countElements(vector<int>& nums, int k) {
+        sort(nums.begin(),nums.end());
+        unordered_map<int,int> lastPos;
+        for (int i=0; i<nums.size(); i++) {
+            lastPos[nums[i]]=i;
+        }
+        int qualified=0;
+        unordered_map<int,bool> numsMarked;
+        for (int i=0; i<nums.size(); i++) {
+            if (!numsMarked[nums[i]]) {
+                int pos=lastPos[nums[i]];
+                if (pos+k<nums.size()) {
+                    qualified++;
+                }
+            }
+        }
+        return qualified;
+    }
+};
