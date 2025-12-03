@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minMirrorPairDistance(vector<int>& nums) {
+        unordered_map<int,vector<int>> numsPos;
+        for (int i=0; i<nums.size(); i++) {
+            numsPos[nums[i]].push_back(i);
+        }
+        int smallestDist=INT_MAX;
+        for (int i=0; i<nums.size(); i++) {
+            string revNum=to_string(nums[i]);
+            reverse(revNum.begin(),revNum.end());
+            int reversed=stoi(revNum);
+            const vector<int>& revPos=numsPos[reversed];
+            int idx=lower_bound(revPos.begin(),revPos.end(),i)-revPos.begin();
+            if (idx>=0 && idx<revPos.size()) {
+                int revIdx=revPos[idx];
+                if (revIdx!=i) {
+                    smallestDist=min(smallestDist,revIdx-i);
+                }
+                if (idx>0) {
+                    revIdx=revPos[idx-1];
+                    if (revIdx!=i) {
+                        smallestDist=min(smallestDist,i-revIdx);
+                    }
+                }
+            }
+        }
+        if (smallestDist==INT_MAX) {
+            return -1;
+        }
+        return smallestDist;
+    }
+};
