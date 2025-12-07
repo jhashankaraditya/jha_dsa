@@ -1,0 +1,34 @@
+class Solution {
+    int calcReflection(int num) {
+        string bin="";
+        while (num>0) {
+            int digit=(num&1);
+            num>>=1;
+            char digitStr=(digit+'0');
+            bin+=digitStr;
+        }
+        int fact=0, ref=0;
+        for (int i=bin.size()-1; i>=0; i--) {
+            int mul=pow(2,fact);
+            fact++;
+            int digit=(bin[i]-'0');
+            ref+=(mul*digit);
+        }
+        return ref;
+    }
+public:
+    vector<int> sortByReflection(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> refNums(n,vector<int>(2,0));
+        for (int i=0; i<n; i++) {
+            int refNum=calcReflection(nums[i]);
+            refNums[i]={refNum,nums[i]};
+        }
+        sort(refNums.begin(),refNums.end());
+        vector<int> ans;
+        for (int i=0; i<n; i++) {
+            ans.push_back(refNums[i][1]);
+        }
+        return ans;
+    }
+};
