@@ -1,0 +1,76 @@
+class Solution {
+public:
+    string fractionAddition(string expression) {
+        int index=0;
+        vector<int> nums_and_dens;
+        string curr_num="";
+        bool next_neg=0;
+        cout<<"a ";
+        while (index<expression.size()) {
+            // cout<<index<<" ";
+            if (expression[index]=='+' || expression[index]=='-' || expression[index]=='*' || expression[index]=='/') {
+                cout<<curr_num<<" ";
+                if (curr_num.size()>0) {
+                    int number=stoi(curr_num);
+                    if (next_neg) {
+                        number*=-1;
+                    }
+                    nums_and_dens.push_back(number);
+                }
+                curr_num="";
+                if (expression[index]=='-') {
+                    next_neg=1;
+                }
+                else next_neg=0;
+            }
+            else {
+                curr_num.push_back(expression[index]);
+            }
+            index++;
+        }
+        if (curr_num.size()>0) {
+            int number=stoi(curr_num);
+            if (next_neg) {
+                number*=-1;
+            }
+            nums_and_dens.push_back(number);
+        }
+        cout<<"b ";
+        int big_den, den_gcd=nums_and_dens[1], den_mul=nums_and_dens[1];
+        for (int i=3; i<nums_and_dens.size(); i+=2) {
+            den_gcd=__gcd(den_gcd,nums_and_dens[i]);
+            den_mul=den_mul*nums_and_dens[i];
+        }
+        cout<<"c ";
+        if (den_mul!=den_gcd) {
+            big_den=den_mul/den_gcd;
+        }
+        else big_den=den_gcd;
+        int numerator=0;
+        for (int i=0; i<nums_and_dens.size(); i+=2) {
+            numerator+=(big_den/nums_and_dens[i+1])*nums_and_dens[i];
+        }
+        cout<<"d ";
+        string ans;
+        if (numerator<0) {
+            ans.push_back('-');
+            numerator*=-1;
+        }
+        cout<<"e ";
+        if (numerator>0 && big_den>0) {
+            int biggest_divide=__gcd(numerator,big_den);
+            numerator/=biggest_divide;
+            big_den/=biggest_divide;
+        }
+        if (numerator==0) {
+            big_den=1;
+        }
+        string num_str=to_string(numerator);
+        ans+=num_str;
+        ans.push_back('/');
+        string den_str=to_string(big_den);
+        ans+=den_str;
+        cout<<"f ";
+        return ans;
+    }
+};
