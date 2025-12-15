@@ -1,0 +1,53 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        vector<string> words;
+        int vowels=0, totalWords=0, vowelCount=0, n=s.size();
+        string word="";
+        for (int i=0; i<n; i++) {
+            if (s[i]==' ') {
+                totalWords++;
+                if (totalWords==1) {
+                    vowels=vowelCount;
+                }
+                else {
+                    if (vowels==vowelCount) {
+                        reverse(word.begin(),word.end());
+                    }
+                }
+                vowelCount=0;
+                words.push_back(word);
+                word="";
+            }
+            else {
+                word.push_back(s[i]);
+                if (s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u') {
+                    vowelCount++;
+                }
+            }
+        }
+        totalWords++;
+                if (totalWords==1) {
+                    vowels=vowelCount;
+                }
+                else {
+                    if (vowels==vowelCount) {
+                        reverse(word.begin(),word.end());
+                    }
+                }
+                vowelCount=0;
+                words.push_back(word);
+                word="";
+        string ans="";
+        int w=words.size();
+        for (int i=0; i<w; i++) {
+            for (int j=0; j<words[i].size(); j++) {
+                ans.push_back(words[i][j]);
+            }
+            if (i!=w-1) {
+                ans.push_back(' ');
+            }
+        }
+        return ans;
+    }
+};
