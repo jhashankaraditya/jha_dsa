@@ -1,0 +1,64 @@
+#define ll long long
+class Solution {
+public:
+    long long minMoves(vector<int>& balance) {
+        ll int negIdx=-1, n=balance.size(), sum=0, moves=0;
+        unordered_map<ll int,ll int> mp;
+        unordered_map<ll int,ll int> pos;
+        for (ll int i=0; i<n; i++) {
+            if (balance[i]<0) {
+                negIdx=i;
+            }
+            sum+=balance[i];
+            mp[balance[i]]++;
+            pos[balance[i]]=i;
+        }
+        if (sum<0) {
+            return -1;
+        }
+        if (negIdx==-1) {
+            return 0;
+        }
+        ll int leftIdx=(negIdx-1+n)%n, rightIdx=(negIdx+1)%n, leftDist=1, rightDist=1;
+        bool left=true;
+        while (balance[negIdx]<0) {
+            if (left) {
+                if (balance[leftIdx]==0) {
+                    leftIdx=(leftIdx-1+n)%n;
+                    leftDist++;
+                    left=false;
+                    continue;
+                }
+                if (abs(balance[leftIdx])>=abs(balance[negIdx])) {
+                    balance[leftIdx]+=balance[negIdx];
+                    moves=(moves-leftDist*balance[negIdx]);
+                    balance[negIdx]=0;
+                }
+                else {
+                    balance[negIdx]+=balance[leftIdx];
+                    moves=(moves+leftDist*balance[leftIdx]);
+                    balance[leftIdx]=0;
+                }
+            }
+            else {
+                if (balance[rightIdx]==0) {
+                    rightIdx=(rightIdx+1)%n;
+                    rightDist++;
+                    left=true;
+                    continue;
+                }
+                if (abs(balance[rightIdx])>=abs(balance[negIdx])) {
+                    balance[rightIdx]+=balance[negIdx];
+                    moves=(moves-rightDist*balance[negIdx]);
+                    balance[negIdx]=0;
+                }
+                else {
+                    balance[negIdx]+=balance[rightIdx];
+                    moves=(moves+rightDist*balance[rightIdx]);
+                    balance[rightIdx]=0;
+                }
+            }
+        }
+        return moves;
+    }
+};
