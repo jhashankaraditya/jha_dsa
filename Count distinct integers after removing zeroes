@@ -1,0 +1,26 @@
+#define ll long long
+class Solution {
+public:
+    long long countDistinct(long long n) {
+        ll int ans=0;
+        string nStr=to_string(n);
+        for (ll int i=0; i<nStr.size()-1; i++) {
+            ll int digits=i+1;
+            ans+=(pow(9,digits));
+        }
+        bool zeroNumber=false;
+        for (ll int i=0; i<nStr.size(); i++) {
+            ll int remDigits=nStr.size()-1-i;
+            ll int currDigit=nStr[i]-'0';
+            if (currDigit==0) {
+                zeroNumber=true;
+                break;
+            }
+            ans+=((currDigit-1)*(pow(9,remDigits)));
+        }
+        if (!zeroNumber) {
+            ans++;
+        }
+        return ans;
+    }
+};
