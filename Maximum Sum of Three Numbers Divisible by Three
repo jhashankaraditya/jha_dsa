@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maximumSum(vector<int>& nums) {
+        int n=nums.size();
+        unordered_map<int,vector<int>> remNum;
+        for (int i=0; i<nums.size(); i++) {
+            int rem=(nums[i]%3);
+            remNum[rem].push_back(nums[i]);
+        }
+        sort(remNum[0].begin(),remNum[0].end());
+        sort(remNum[1].begin(),remNum[1].end());
+        sort(remNum[2].begin(),remNum[2].end());
+        int n1=remNum[0].size(), n2=remNum[1].size(), n3=remNum[2].size(), maxSum=0;
+        if (n1-3>=0) {
+            maxSum=max(maxSum,remNum[0][n1-1]+remNum[0][n1-2]+remNum[0][n1-3]);
+        }
+        if (n2-3>=0) {
+            maxSum=max(maxSum,remNum[1][n2-1]+remNum[1][n2-2]+remNum[1][n2-3]);
+        }
+        if (n3-3>=0) {
+            maxSum=max(maxSum,remNum[2][n3-1]+remNum[2][n3-2]+remNum[2][n3-3]);
+        }
+        if (n1-1>=0 && n2-1>=0 && n3-1>=0) {
+            maxSum=max(maxSum,remNum[0][n1-1]+remNum[1][n2-1]+remNum[2][n3-1]);
+        }
+        return maxSum;
+    }
+};
