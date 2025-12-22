@@ -1,0 +1,19 @@
+#define ll long long
+class Solution {
+public:
+    long long maximumScore(vector<int>& nums, string s) {
+        priority_queue<ll int> pq;
+        ll int score=0;
+        for (ll int i=0; i<s.size(); i++) {
+            pq.push(nums[i]);
+            if (s[i]=='1') {
+                if (!pq.empty()) {
+                    ll int topNum=pq.top();
+                    pq.pop();
+                    score+=topNum;
+                }
+            }
+        }
+        return score;
+    }
+};
