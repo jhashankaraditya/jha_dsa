@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& nums, vector<int>& forbidden) {
+        int n=nums.size(), swaps=0;
+        vector<pair<int,int>> good;
+        unordered_map<int,int> badFreq;
+        priority_queue<pair<int,int>> pq;
+        for (int i=0; i<n; i++) {
+            if (nums[i]==forbidden[i]) {
+                badFreq[nums[i]]++;
+            }
+            else good.push_back({nums[i],forbidden[i]});
+        }
+        if (badFreq.size()==0) {
+            return 0;
+        }
+        for (auto it:badFreq) {
+            pq.push({it.second,it.first});
+        }
+        while (pq.size()>1) {
+            pair<int,int> firstMax=pq.top();
+            pq.pop();
+            pair<int,int> secondMax=pq.top();
+            pq.pop();
+            swaps++;
+            if (firstMax.first-1>0) {
+                pq.push({firstMax.first-1,firstMax.second});
+            }
+            if (secondMax.first-1>0) {
+                pq.push({secondMax.first-1,secondMax.second});
+            }
+            good.push_back({firstMax.second,secondMax.second});
+        }
+        if (pq.size()==0) {
+            return swaps;
+        }
+        pair<int,int> finalBad=pq.top();
+        int currNum=finalBad.second, currFreq=finalBad.first, goodPairs=0;
+        for (int i=0; i<good.size(); i++) {
+            int firstNum=good[i].first, secondNum=good[i].second;
+            if (currNum!=firstNum && currNum!=secondNum) {
+                goodPairs++;
+            }
+        }
+        if (goodPairs<currFreq) {
+            return -1;
+        }
+        return currFreq+swaps;
+    }
+};
