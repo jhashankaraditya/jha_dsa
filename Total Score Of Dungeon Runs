@@ -1,0 +1,27 @@
+#define ll long long
+class Solution {
+public:
+    long long totalScore(int hp, vector<int>& damage, vector<int>& requirement) {
+        ll int n=damage.size(), ans=0;
+        vector<ll int> prefDamage(n);
+        for (ll int i=0; i<n; i++) {
+            prefDamage[i]=damage[i];
+        }
+        for (ll int i=1; i<n; i++) {
+            prefDamage[i]+=prefDamage[i-1];
+        }
+        for (ll int i=0; i<n; i++) {
+            if (hp-prefDamage[i]>=requirement[i]) {
+                ans+=(i+1);
+            }
+            else {
+                ll int reqPref=requirement[i]+prefDamage[i]-hp;
+                ll int idx=lower_bound(prefDamage.begin(),prefDamage.end(),reqPref)-prefDamage.begin();
+                if (idx<=i) {
+                    ans+=(i-idx);
+                }
+            }
+        }
+        return ans;
+    }
+};
