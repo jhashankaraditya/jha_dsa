@@ -1,0 +1,54 @@
+#define mod 1000000007
+class Solution {
+public:
+    vector<int> sumAndMultiply(string s, vector<vector<int>>& queries) {
+        long long int n=s.size();
+        vector<long long int> nonZeroDigits;
+        vector<long long int> countPrefNonZero(n);
+        long long int nonZeros=0;
+        for (long long int i=0; i<n; i++) {
+            if (s[i]!='0') {
+                nonZeroDigits.push_back(s[i]-'0');
+                nonZeros++;
+            }
+            countPrefNonZero[i]=nonZeros;
+        }
+        vector<long long int> val;
+        long long int currNum=0;
+        for (long long int i=0; i<nonZeroDigits.size(); i++) {
+            currNum=((currNum*10)+nonZeroDigits[i])%mod;
+            val.push_back(currNum);
+        }
+        vector<long long int> prefSum(n);
+        for (long long int i=0; i<n; i++) {
+            prefSum[i]=(s[i]-'0');
+        }
+        for (long long int i=1; i<n; i++) {
+            prefSum[i]+=prefSum[i-1];
+        }
+        vector<long long int> pow10(100001,1);
+        for (long long int i=1; i<=100000; i++) {
+            pow10[i]=(pow10[i-1]*10)%mod;
+        }
+        vector<int> ans;
+        for (long long int i=0; i<queries.size(); i++) {
+            long long int left=queries[i][0], right=queries[i][1];
+            long long int leftNonZero;
+            if (left>0) {
+                leftNonZero=countPrefNonZero[left-1];
+            }
+            else leftNonZero=0;
+            long long int rightNonZero=countPrefNonZero[right];
+            long long int power=pow10[rightNonZero-leftNonZero];
+            long long int back=(leftNonZero>0)?(val[leftNonZero-1]*power)%mod:0;
+            long long int num=(rightNonZero>0)?(val[rightNonZero-1]-back)%mod:0;
+            num=(num+mod)%mod;
+            long long int sum=(left>0)?prefSum[right]-prefSum[left-1]:prefSum[right];
+            sum%=mod;
+            long long int numObtained=((sum%mod)*(num%mod)*1LL)%mod;
+            int newNum=(int)numObtained;
+            ans.push_back(newNum);
+        }
+        return ans;
+    }
+};
