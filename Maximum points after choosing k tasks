@@ -1,0 +1,26 @@
+#define ll long long
+class Solution {
+public:
+    long long maxPoints(vector<int>& technique1, vector<int>& technique2, int k) {
+        ll int n=technique1.size(), sum=0;
+        priority_queue<ll int,vector<ll int>,greater<ll int>> pq;
+        ll int timesOneChosen=0;
+        for (ll int i=0; i<n; i++) {
+            if (technique1[i]>=technique2[i]) {
+                timesOneChosen++;
+                sum+=technique1[i];
+            }
+            else {
+                sum+=technique2[i];
+                pq.push(technique2[i]-technique1[i]);
+            }
+        }
+        while (timesOneChosen<k) {
+            timesOneChosen++;
+            ll int topVal=pq.top();
+            pq.pop();
+            sum-=topVal;
+        }
+        return sum;
+    }
+};
