@@ -1,0 +1,17 @@
+#define ll long long
+class Solution {
+public:
+    long long lastInteger(long long n) {
+        ll int step=1, remaining=n, head=1;
+        bool leftToRight=true;
+        while (remaining>1) {
+            if (!leftToRight && remaining%2==0) {
+                head+=step;
+            }
+            step*=2;
+            remaining-=(remaining/2);
+            leftToRight=!leftToRight;
+        }
+        return head;
+    }
+};
