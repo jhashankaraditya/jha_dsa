@@ -1,0 +1,24 @@
+#define ll long long
+class Solution {
+public:
+    long long maximumScore(vector<int>& nums) {
+        ll int n=nums.size();
+        vector<ll int> prefSum(n);
+        vector<ll int> suffMin(n);
+        for (ll int i=0; i<n; i++) {
+            prefSum[i]=nums[i];
+            suffMin[i]=nums[i];
+        }
+        for (ll int i=1; i<n; i++) {
+            prefSum[i]+=prefSum[i-1];
+        }
+        for (ll int i=n-2; i>=0; i--) {
+            suffMin[i]=min(suffMin[i],suffMin[i+1]);
+        }
+        ll int maxScore=LLONG_MIN;
+        for (ll int i=0; i<n-1; i++) {
+            maxScore=max(maxScore,prefSum[i]-suffMin[i+1]);
+        }
+        return maxScore;
+    }
+};
