@@ -1,0 +1,16 @@
+#define ll long long
+class Solution {
+public:
+    long long minimumCost(int cost1, int cost2, int costBoth, int need1, int need2) {
+        ll int newNeed1=need1, newNeed2=need2, newCost1=cost1, newCost2=cost2, bothCost=costBoth;
+        ll int minNeed=min(newNeed1,newNeed2), maxNeed=max(newNeed1,newNeed2);
+        ll int score1=(newCost1*newNeed1)+(newCost2*newNeed2);
+        ll int score2=bothCost*maxNeed;
+        ll int score3;
+        if (maxNeed==newNeed1) {
+            score3=costBoth*minNeed+(maxNeed-minNeed)*newCost1;
+        }
+        else score3=costBoth*minNeed+(maxNeed-minNeed)*newCost2;
+        return min({score1,score2,score3});
+    }
+};
