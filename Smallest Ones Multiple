@@ -1,0 +1,65 @@
+#define ll long long
+class Solution {
+public:
+    int minAllOneMultiple(int k) {
+        vector<ll int> numTable;
+        ll int kNum=k;
+        for (ll int i=1; i<10; i++) {
+            numTable.push_back(i*kNum);
+        }
+        // cout<<"a ";
+        string dividend;
+        dividend.push_back('1');
+        ll int divNum=stoi(dividend);
+        // cout<<"b ";
+        while (divNum<k) {
+            dividend.push_back('1');
+            divNum=stoi(dividend);
+        }
+        // cout<<"c ";
+        unordered_map<ll int,bool> numMarked;
+        int ans1=dividend.size();
+        ll int ans=ans1;
+        numMarked[divNum]=true;
+        // cout<<"d ";
+        while (divNum!=0) {
+            // cout<<divNum<<" ";
+            ll int idx=lower_bound(numTable.begin(),numTable.end(),divNum)-numTable.begin();
+            // cout<<"e ";
+            if (idx==numTable.size()) {
+                // cout<<"f ";
+                divNum-=numTable[numTable.size()-1];
+                // cout<<"g ";
+            }
+            else {
+                // cout<<"h ";
+                if (numTable[idx]==divNum) {
+                    divNum=0;
+                    break;
+                    // cout<<"i ";
+                }
+                else {
+                    // cout<<"j ";
+                    idx--;
+                    divNum-=numTable[idx];
+                    // cout<<"k ";
+                }
+            }
+            // cout<<"l ";
+            if (numMarked[divNum]) {
+                // cout<<"m ";
+                return -1;
+            }
+            // cout<<"n ";
+            numMarked[divNum]=true;
+            while (divNum<k) {
+                divNum*=10;
+                divNum+=1;
+                ans++;
+            }
+            // cout<<"o ";
+        }
+        // cout<<"p ";
+        return ans;
+    }
+};
