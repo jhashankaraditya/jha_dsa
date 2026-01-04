@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int distributeCandies(vector<int>& candyType) {
+        int n=candyType.size();
+        vector<vector<int>> freqCandy;
+        unordered_map<int,int> candyFreq;
+        for (int i=0; i<n; i++) {
+            candyFreq[candyType[i]]++;
+        }
+        for (auto it:candyFreq) {
+            freqCandy.push_back({it.second,it.first});
+        }
+        sort(freqCandy.begin(),freqCandy.end());
+        int index=0, times=n/2;
+        unordered_map<int,bool> marked;
+        int n1=freqCandy.size();
+        while (times--) {
+            if (freqCandy[index][0]>0) {
+                freqCandy[index][0]--;
+                marked[freqCandy[index][1]]=true;
+            }
+            index=(index+1)%n1;
+        }
+        int candies=marked.size();
+        return candies;
+    }
+};
