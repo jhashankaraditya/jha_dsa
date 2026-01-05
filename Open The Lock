@@ -1,0 +1,64 @@
+class Solution {
+    int traverseBFS(map<string,bool> marked, string curr, string target) {
+        if (marked[curr]) {
+            return -1;
+        }
+        queue<string> q;
+        q.push(curr);
+        q.push("1");
+        int level=0;
+        while (!q.empty()) {
+            string frontstr=q.front();
+            cout<<frontstr<<endl;
+            q.pop();
+            if (frontstr=="1") {
+                level++;
+                if (!q.empty()) {
+                    q.push("1");
+                }
+            }
+            else {
+                marked[frontstr]=1;
+                if (frontstr==target) {
+                    return level;
+                }
+                else {
+                    for (int i=0; i<4; i++) {
+                        string new_str_up, new_str_down;
+                        int j=0;
+                        for (j=0; j<i; j++) {
+                            new_str_up.push_back(frontstr[j]);
+                            new_str_down.push_back(frontstr[j]);
+                        }
+                        int curr_num=(frontstr[i]-'0');
+                        int up_num=(curr_num>0)?curr_num-1:9; 
+                        int down_num=(curr_num+1)%10;
+                        new_str_up.push_back(up_num+'0');
+                        new_str_down.push_back(down_num+'0');
+                        for (j=i+1; j<4; j++) {
+                            new_str_up.push_back(frontstr[j]);
+                            new_str_down.push_back(frontstr[j]);
+                        }
+                        if (!marked[new_str_up]) {
+                            q.push(new_str_up);
+                            marked[new_str_up]=1;
+                        }
+                        if (!marked[new_str_down]) {
+                            q.push(new_str_down);
+                            marked[new_str_down]=1;
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+public:
+    int openLock(vector<string>& deadends, string target) {
+        map<string,bool> marked;
+        for (int i=0; i<deadends.size(); i++) {
+            marked[deadends[i]]=1;
+        }
+        return traverseBFS(marked,"0000",target);
+    }
+};
