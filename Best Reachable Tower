@@ -1,0 +1,31 @@
+class Solution {
+    static bool cmp(vector<int> &a, vector<int> &b) {
+        if (a[0]==b[0]) {
+            return a[1]<b[1];
+        }
+        return a[0]<b[0];
+    }
+public:
+    vector<int> bestTower(vector<vector<int>>& towers, vector<int>& center, int radius) {
+        int maxQuality=INT_MIN;
+        unordered_map<int,vector<vector<int>>> qualityFactorCoordinates;
+        for (int i=0; i<towers.size(); i++) {
+            int dist=abs(towers[i][0]-center[0])+abs(towers[i][1]-center[1]);
+            if (dist<=radius) {
+                qualityFactorCoordinates[towers[i][2]].push_back({towers[i][0],towers[i][1]});
+                if (towers[i][2]>maxQuality) {
+                    maxQuality=towers[i][2];
+                }
+            }
+        }
+        if (qualityFactorCoordinates[maxQuality].size()==1) {
+            return qualityFactorCoordinates[maxQuality][0];
+        }
+        else if (qualityFactorCoordinates[maxQuality].size()==0) {
+            return {-1,-1};
+        }
+        vector<vector<int>> coord=qualityFactorCoordinates[maxQuality];
+        sort(coord.begin(),coord.end(),cmp);
+        return coord[0];
+    }
+};
