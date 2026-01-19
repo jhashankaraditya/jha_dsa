@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, vector<int>& target) {
+        int operations=0;
+        unordered_map<int,bool> numMarked;
+        for (int i=0; i<nums.size(); i++) {
+            if (nums[i]!=target[i]) {
+                numMarked[nums[i]]=true;
+            }
+        }
+        return numMarked.size();
+    }
+};
