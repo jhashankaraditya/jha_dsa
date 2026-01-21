@@ -1,0 +1,55 @@
+class AuctionSystem {
+    unordered_map<int,unordered_map<int,int>> userItemAmount;
+    unordered_map<int, set<pair<int,int>, function<bool(pair<int,int>, pair<int,int>)>>> itemAmountUser;
+public:
+    AuctionSystem() {
+        
+    }
+    
+    void addBid(int userId, int itemId, int bidAmount) {
+        if (userItemAmount[userId][itemId] != 0) {
+            removeBid(userId,itemId);
+        }
+        userItemAmount[userId][itemId] = bidAmount;
+        auto cmp = [](pair<int,int> a, pair<int,int> b) {
+            if (a.first != b.first) return a.first > b.first;
+            return a.second > b.second;
+        };
+        if (itemAmountUser.find(itemId) == itemAmountUser.end()) {
+            itemAmountUser[itemId] = set<pair<int,int>, function<bool(pair<int,int>, pair<int,int>)>>(cmp);
+        }
+        itemAmountUser[itemId].insert({bidAmount,userId});
+    }
+    
+    void updateBid(int userId, int itemId, int newAmount) {
+        removeBid(userId,itemId);
+        addBid(userId,itemId,newAmount);
+    }
+    
+    void removeBid(int userId, int itemId) {
+        int amount=userItemAmount[userId][itemId];
+        auto &s=itemAmountUser[itemId];
+        auto it=s.find({amount,userId});
+        if (it!=s.end()) {
+            s.erase(it);
+        }
+        userItemAmount[userId][itemId]=-1;
+    }
+    
+    int getHighestBidder(int itemId) {
+        if (itemAmountUser.find(itemId)==itemAmountUser.end() || itemAmountUser[itemId].empty()) {
+            return -1;
+        }
+        auto it=itemAmountUser[itemId].begin();
+        return it->second;
+    }
+};
+
+/**
+ * Your AuctionSystem object will be instantiated and called as such:
+ * AuctionSystem* obj = new AuctionSystem();
+ * obj->addBid(userId,itemId,bidAmount);
+ * obj->updateBid(userId,itemId,newAmount);
+ * obj->removeBid(userId,itemId);
+ * int param_4 = obj->getHighestBidder(itemId);
+ */
