@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int maxCapacity(vector<int>& costs, vector<int>& capacity, int budget) {
+        int n=costs.size();
+        vector<vector<int>> costCapacity;
+        for (int i=0; i<n; i++) {
+            costCapacity.push_back({costs[i],capacity[i]});
+        }
+        sort(costCapacity.begin(),costCapacity.end());
+        vector<int> prefMaxCapacity(n);
+        for (int i=0; i<n; i++) {
+            prefMaxCapacity[i]=costCapacity[i][1];
+        }
+        for (int i=1; i<n; i++) {
+            prefMaxCapacity[i]=max(prefMaxCapacity[i],prefMaxCapacity[i-1]);
+        }
+        // for (int i=0; i<n; i++) {
+        //     cout<<i<<" "<<costCapacity[i][0]<<" "<<costCapacity[i][1]<<"\n";
+        // }
+        int maxCapacity=0;
+        for (int i=0; i<n; i++) {
+            if (costCapacity[i][0]<budget) {
+                maxCapacity=max(maxCapacity,costCapacity[i][1]);
+            }
+            // cout<<i<<" "<<maxCapacity<<"\n";
+        }
+        for (int i=0; i<n; i++) {
+            int reqBudget=budget-1-costCapacity[i][0];
+            int idx=upper_bound(costCapacity.begin(),costCapacity.end(),reqBudget,[](int value, const vector<int>& v) {
+        return value < v[0];
+    })-costCapacity.begin();
+            // cout<<idx<<" ";
+            idx--;
+            if (idx==i) {
+                idx--;
+            }
+            if (idx>=0 && idx<n) {
+                if (idx<i) {
+                    maxCapacity=max(maxCapacity,costCapacity[i][1]+prefMaxCapacity[idx]);
+                }
+                else if (i>0) {
+                    maxCapacity=max(maxCapacity,costCapacity[i][1]+prefMaxCapacity[i-1]);
+                }
+            }
+            // cout<<i<<" "<<idx<<" "<<maxCapacity<<"\n";
+        }
+        return maxCapacity;
+    }
+};
