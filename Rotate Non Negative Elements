@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> rotateElements(vector<int>& nums, int k) {
+        vector<int> nonNegative;
+        for (int i=0; i<nums.size(); i++) {
+            if (nums[i]>=0) {
+                nonNegative.push_back(nums[i]);
+            }
+        }
+        int nonNegSize=nonNegative.size();
+        // for (int i=0; i<nonNegSize; i++) {
+        //     cout<<nonNegative[i]<<" ";
+        // }cout<<"\n";
+        if (nonNegSize==0) {
+            return nums;
+        }
+        int moves=k%nonNegSize;
+        if (moves==0) {
+            return nums;
+        }
+        vector<int> newPos(nonNegSize);
+        for (int i=0; i<nonNegSize; i++) {
+            int posNew=(i-moves+nonNegSize)%nonNegSize;
+            newPos[posNew]=nonNegative[i];
+        }
+        // for (int i=0; i<nonNegSize; i++) {
+        //     cout<<newPos[i]<<" ";
+        // }cout<<"\n";
+        int idx=0;
+        for (int i=0; i<nums.size(); i++) {
+            if (nums[i]>=0) {
+                nums[i]=newPos[idx];
+                idx++;
+            }
+        }
+        return nums;
+    }
+};
