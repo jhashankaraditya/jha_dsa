@@ -1,0 +1,51 @@
+#define ll long long
+class Solution {
+    void bfsTraverse(ll int node, ll int dist, vector<vector<ll int>> &adjList, vector<vector<ll int>> &nodeDistance, int n) {
+        vector<bool> visited(n,0);
+        visited[node]=true;
+        nodeDistance.push_back({node,0});
+        queue<pair<ll int,ll int>> q;
+        q.push({node,0});
+        while (!q.empty()) {
+            pair<ll int,ll int> p=q.front();
+            q.pop();
+            ll int nodeVal=p.first, dist=p.second;
+            for (auto neighbour:adjList[nodeVal]) {
+                if (!visited[neighbour]) {
+                    visited[neighbour]=true;
+                    nodeDistance.push_back({neighbour,dist+1});
+                    q.push({neighbour,dist+1});
+                }
+            }
+        }
+    }
+public:
+    int specialNodes(int n, vector<vector<int>>& edges, int x, int y, int z) {
+        vector<vector<ll int>> adjList(n);
+        for (ll int i=0; i<edges.size(); i++) {
+            adjList[edges[i][0]].push_back(edges[i][1]);
+            adjList[edges[i][1]].push_back(edges[i][0]);
+        }
+        vector<vector<ll int>> xNodeDist, yNodeDist, zNodeDist;
+        bfsTraverse(x,0,adjList,xNodeDist,n);
+        bfsTraverse(y,0,adjList,yNodeDist,n);
+        bfsTraverse(z,0,adjList,zNodeDist,n);
+        vector<vector<ll int>> nodeDistances(n);
+        for (ll int i=0; i<xNodeDist.size(); i++) {
+            ll int nodex=xNodeDist[i][0], distx=xNodeDist[i][1], nodey=yNodeDist[i][0], disty=yNodeDist[i][1], nodez=zNodeDist[i][0], distz=zNodeDist[i][1];
+            nodeDistances[nodex].push_back(distx);
+            nodeDistances[nodey].push_back(disty);
+            nodeDistances[nodez].push_back(distz);
+        }
+        int special=0;
+        for (int i=0; i<n; i++) {
+            vector<ll int> dist=nodeDistances[i];
+            sort(dist.begin(),dist.end());
+            ll int sq1=(dist[2]*dist[2]), sq2=(dist[1]*dist[1]), sq3=(dist[0]*dist[0]);
+            if ((sq3+sq2)==sq1) {
+                special++;
+            }
+        }
+        return special;
+    }
+};
