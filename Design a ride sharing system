@@ -1,0 +1,44 @@
+class RideSharingSystem {
+    queue<int> driverQueue;
+    queue<int> riderQueue;
+    unordered_map<int,bool> cancelled;
+public:
+    RideSharingSystem() {
+        
+    }
+    
+    void addRider(int riderId) {
+        riderQueue.push(riderId);
+        cancelled[riderId]=false;
+    }
+    
+    void addDriver(int driverId) {
+        driverQueue.push(driverId);
+    }
+    
+    vector<int> matchDriverWithRider() {
+        while (!riderQueue.empty() && cancelled[riderQueue.front()]) {
+            riderQueue.pop();
+        }
+        if (driverQueue.empty() || riderQueue.empty()) {
+            return {-1,-1};
+        }
+        int currDriver=driverQueue.front(), currRider=riderQueue.front();
+        driverQueue.pop();
+        riderQueue.pop();
+        return {currDriver,currRider};
+    }
+    
+    void cancelRider(int riderId) {
+        cancelled[riderId]=true;
+    }
+};
+
+/**
+ * Your RideSharingSystem object will be instantiated and called as such:
+ * RideSharingSystem* obj = new RideSharingSystem();
+ * obj->addRider(riderId);
+ * obj->addDriver(driverId);
+ * vector<int> param_3 = obj->matchDriverWithRider();
+ * obj->cancelRider(riderId);
+ */
