@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int dominantIndices(vector<int>& nums) {
+        vector<float> numsF;
+        for (int i=0; i<nums.size(); i++) {
+            float num=nums[i];
+            numsF.push_back(nums[i]);
+        }
+        int dominant=0;
+        float sum=numsF[nums.size()-1], numbers=1;
+        for (int i=nums.size()-2; i>=0; i--) {
+            float avg=sum/numbers;
+            if (numsF[i]>avg) {
+                dominant++;
+            }
+            sum+=numsF[i];
+            numbers++;
+        }
+        return dominant;
+    }
+};
