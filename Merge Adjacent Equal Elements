@@ -1,0 +1,30 @@
+#define ll long long
+class Solution {
+public:
+    vector<long long> mergeAdjacent(vector<int>& nums) {
+        stack<ll int> st;
+        ll int first=nums[0];
+        st.push(first);
+        for (ll int i=1; i<nums.size(); i++) {
+            ll int curr=nums[i];
+            while (!st.empty()) {
+                if (st.top()==curr) {
+                    st.pop();
+                    curr*=2;
+                }
+                else {
+                    break;
+                }
+            }
+            st.push(curr);
+        }
+        vector<ll int> ans;
+        while (!st.empty()) {
+            ll int num=st.top();
+            st.pop();
+            ans.push_back(num);
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
