@@ -1,0 +1,44 @@
+#define ll long long
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, long long k) {
+        priority_queue<ll int> max_pq;
+        priority_queue<ll int,vector<ll int>,greater<ll int>> min_pq;
+        unordered_map<ll int,ll int> numsFreq;
+        ll int left=0, right=0, ans=0;
+        while (right<nums.size()) {
+            // cout<<"enter: "<<left<<" "<<right<<"\n";
+            max_pq.push(nums[right]);
+            min_pq.push(nums[right]);
+            numsFreq[nums[right]]++;
+            while (!max_pq.empty() && numsFreq[max_pq.top()]==0) {
+                max_pq.pop();
+            }
+            while (!min_pq.empty() && numsFreq[min_pq.top()]==0) {
+                min_pq.pop();
+            }
+            while ((max_pq.top()-min_pq.top())*(right-left+1)>k) {
+                // cout<<"a\n";
+                numsFreq[nums[left]]--;
+                left++;
+                while (!max_pq.empty() && numsFreq[max_pq.top()]==0) {
+                    max_pq.pop();
+                }
+                while (!min_pq.empty() && numsFreq[min_pq.top()]==0) {
+                    min_pq.pop();
+                }
+            }
+            while (!max_pq.empty() && numsFreq[max_pq.top()]==0) {
+                max_pq.pop();
+            }
+            while (!min_pq.empty() && numsFreq[min_pq.top()]==0) {
+                min_pq.pop();
+            }
+            ans+=(right-left+1);
+            // cout<<"exit: "<<left<<" "<<right<<"\n";
+            // cout<<ans<<"\n";
+            right++;
+        }
+        return ans;
+    }
+};
