@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> toggleLightBulbs(vector<int>& bulbs) {
+        map<int,int> bulbFreq;
+        for (int i=0; i<bulbs.size(); i++) {
+            bulbFreq[bulbs[i]]++;
+        }
+        vector<int> ans;
+        for (auto it:bulbFreq) {
+            int num=it.first, freq=it.second;
+            if (freq%2==1) {
+                ans.push_back(num);
+            }
+        }
+        return ans;
+    }
+};
