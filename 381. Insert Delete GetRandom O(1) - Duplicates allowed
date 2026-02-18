@@ -1,0 +1,51 @@
+class RandomizedCollection {
+    unordered_map<int,set<int>> nums_indices;
+    vector<int> nums;
+public:
+    RandomizedCollection() {
+        
+    }
+    
+    bool insert(int val) {
+        nums.push_back(val);
+        nums_indices[val].insert(nums.size()-1);
+        if (nums_indices[val].size()==1) {
+            return 1;
+        }
+        return 0;
+    }
+    
+    bool remove(int val) {
+        if (nums_indices.find(val)!=nums_indices.end()) {
+            auto it=nums_indices.find(val);
+            auto val_idx=*it->second.begin();
+            int last_num=nums[nums.size()-1];
+            it->second.erase(it->second.begin());
+            nums[val_idx]=last_num;
+            nums_indices[last_num].insert(val_idx);
+            nums_indices[last_num].erase(nums.size()-1);
+            nums.pop_back();
+            if (it->second.size()==0) {
+                nums_indices.erase(it);
+            }
+            return 1;
+        }
+        return 0;
+    }
+    
+    int getRandom() {
+        if (nums.size()==0) {
+            return -1;
+        }
+        int idx=rand()%nums.size();
+        return nums[idx];
+    }
+};
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
