@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string trimTrailingVowels(string s) {
+        string ans;
+        bool cons=false;
+        for (int i=s.size()-1; i>=0; i--) {
+            if (s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u') {
+                if (cons) {
+                    ans.push_back(s[i]);
+                }
+            }
+            else {
+                ans.push_back(s[i]);
+                cons=true;
+            }
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
