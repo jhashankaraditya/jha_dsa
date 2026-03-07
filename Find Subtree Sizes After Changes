@@ -1,0 +1,67 @@
+class Solution {
+    int calcTreeSize(vector<vector<int>> &adj_list, int currNode, vector<int> &subtreeSize) {
+        int childrenSize = 0;
+        for (int neighbour : adj_list[currNode]) {
+            childrenSize += calcTreeSize(adj_list, neighbour, subtreeSize);
+        }
+        return subtreeSize[currNode] = 1 + childrenSize;
+    }
+
+public:
+    vector<int> findSubtreeSizes(vector<int>& parent, string s) {
+        int n = s.size();
+        
+        // Step 1: Build original adjacency list
+        vector<vector<int>> adj_list(n);
+        for (int i = 1; i < n; i++) {
+            adj_list[parent[i]].push_back(i);
+        }
+
+        // Step 2: BFS to compute last seen character info
+        vector<vector<int>> recentVal(n, vector<int>(26, -1));
+        vector<int> newParent = parent;
+
+        queue<int> q;
+        q.push(0);
+
+        // Initialize root
+        recentVal[0][s[0] - 'a'] = 0;
+        newParent[0] = -1;
+
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+
+            for (int child : adj_list[node]) {
+                // Copy parent character state
+                recentVal[child] = recentVal[node];
+
+                int ch = s[child] - 'a';
+
+                // Update new parent if ancestor with same char exists
+                if (recentVal[node][ch] != -1) {
+                    newParent[child] = recentVal[node][ch];
+                } else {
+                    newParent[child] = parent[child];
+                }
+
+                // Mark this node as last seen for its character
+                recentVal[child][ch] = child;
+
+                q.push(child);
+            }
+        }
+
+        // Step 3: Build new tree using updated parents
+        vector<vector<int>> newAdj(n);
+        for (int i = 1; i < n; i++) {
+            newAdj[newParent[i]].push_back(i);
+        }
+
+        // Step 4: Compute subtree sizes
+        vector<int> subtreeSize(n, 0);
+        calcTreeSize(newAdj, 0, subtreeSize);
+
+        return subtreeSize;
+    }
+};
