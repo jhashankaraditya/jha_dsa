@@ -1,0 +1,27 @@
+#define mod 1000000007
+class Solution {
+public:
+    int smallestBalancedIndex(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> sumArr(n,0);
+        vector<int> productArr(n,1);
+        for (int i=1; i<n; i++) {
+            long long num1=sumArr[i-1], num2=nums[i-1];
+            long long sum=(num1%mod+num2%mod)%mod;
+            sumArr[i]=sum%mod;
+        }
+        for (int i=n-2; i>=0; i--) {
+            long long num1=productArr[i+1], num2=nums[i+1];
+            long long mul=(num1%mod*num2%mod)%mod;
+            productArr[i]=mul%mod;
+        }
+        int idx=-1;
+        for (int i=0; i<n; i++) {
+            if (sumArr[i]==productArr[i]) {
+                idx=i;
+                break;
+            }
+        }
+        return idx;
+    }
+};
