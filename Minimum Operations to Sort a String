@@ -1,0 +1,62 @@
+class Solution {
+    bool checkSorted(string word) {
+        string sortedWord=word;
+        sort(sortedWord.begin(),sortedWord.end());
+        for (int i=0; i<word.size(); i++) {
+            if (sortedWord[i]!=word[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+public:
+    int minOperations(string s) {
+        int n=s.size();
+        // cout<<"a ";
+        if (n<=1) {
+            return 0;
+        }
+        // cout<<"b ";
+        bool isSorted=checkSorted(s);
+        if (isSorted) {
+            return 0;
+        }
+        if (!isSorted && n==2) {
+            return -1;
+        }
+        // cout<<"c ";
+        char smallestLetter='z';
+        int smallestIdx=-1;
+        for (int i=n-1; i>=0; i--) {
+            if (smallestLetter>=s[i]) {
+                smallestLetter=s[i];
+                smallestIdx=i;
+            }
+        }
+        // cout<<"d ";
+        // cout<<smallestLetter<<" "<<smallestIdx<<"\n";
+        if (smallestIdx==0) {
+            return 1;
+        }
+        // cout<<"e ";
+        if (smallestIdx==n-1) {
+            sort(s.begin()+1,s.end());
+            sort(s.begin(),s.end()-1);
+            bool isSorted=checkSorted(s.substr(1));
+            if (isSorted) {
+                return 2;
+            }
+            else return 3;
+        }
+        // cout<<"f ";
+        // cout<<s<<" "<<smallestIdx<<"\n";
+        sort(s.begin(),s.end()-1);
+        bool isSecondSorted = checkSorted(s.substr(1));
+        // cout<<s<<" "<<isSecondSorted<<"\n";
+        if (isSecondSorted) {
+            return 1;
+        }
+        // cout<<"g ";
+        return 2;
+    }
+};
