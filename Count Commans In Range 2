@@ -1,0 +1,36 @@
+#define ll long long
+class Solution {
+public:
+    long long countCommas(long long n) {
+        ll int commas=0;
+        if (n<1000) {
+            commas=0;
+        }
+        if (n<1000000 && n>=1000) {
+            commas+=(n-999);
+        }
+        if (n<1000000000 && n>=1000000) {
+            commas+=((n-999999)*2);
+            commas+=(999000)*1;
+        }
+        if (n<1000000000000 && n>=1000000000) {
+            commas+=((n-999999999)*3);
+            commas+=(999000000)*2;
+            commas+=(999000)*1;
+        }
+        if (n<1000000000000000 && n>=1000000000000) {
+            commas+=((n-999999999999)*4);
+            commas+=(999000000000)*3;
+            commas+=(999000000)*2;
+            commas+=(999000)*1;
+        }
+        if (n==1000000000000000) {
+            commas+=5;
+            commas+=(999000000000000)*4;
+            commas+=(999000000000)*3;
+            commas+=(999000000)*2;
+            commas+=(999000)*1;
+        }
+        return commas;
+    }
+};
