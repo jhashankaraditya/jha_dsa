@@ -1,0 +1,106 @@
+class Solution {
+public:
+    int longestArithmetic(vector<int>& nums) {
+        int n=nums.size();
+        if (n<=2) {
+            return n;
+        }
+        vector<int> leftConsLen(n,1);
+        vector<int> rightConsLen(n,1);
+        int diff=nums[0]-nums[1], cons=1;
+        for (int i=1; i<n; i++) {
+            if (diff==nums[i]-nums[i-1]) {
+                cons++;
+                leftConsLen[i]=cons;
+            }
+            else {
+                cons=2;
+                leftConsLen[i]=cons;
+                diff=nums[i]-nums[i-1];
+            }
+        }
+        diff=nums[n-2]-nums[n-1];
+        cons=1;
+        for (int i=n-2; i>=0; i--) {
+            if (diff==nums[i]-nums[i+1]) {
+                cons++;
+                rightConsLen[i]=cons;
+            }
+            else {
+                cons=2;
+                rightConsLen[i]=cons;
+                diff=nums[i]-nums[i+1];
+            }
+        }
+        int maxLen=2;
+        for (int i=0; i<n; i++) {
+            // cout<<i<<" ";
+            if (i==0) {
+                // cout<<"a ";
+                maxLen=max(maxLen,1+rightConsLen[i+1]);
+            }
+            if (i==n-1) {
+                // cout<<"b ";
+                maxLen=max(maxLen,1+leftConsLen[i-1]);
+            }
+            if (i>0 && i<n-1) {
+                // cout<<"c ";
+                int len=1;
+                // cout<<maxLen<<" ";
+                maxLen=max({maxLen,1+leftConsLen[i-1],1+rightConsLen[i+1]});
+                // cout<<maxLen<<" ";
+                int diffNeeded=(nums[i+1]-nums[i-1])/2;
+                // cout<<"diffNeeded: "<<diffNeeded<<" ";
+                if ((abs(nums[i+1]-nums[i-1]))%2==1) {
+                    // cout<<"l\n";
+                    continue;
+                }
+                // cout<<"m ";
+                int leftDiff=(i-2>=0)?nums[i-1]-nums[i-2]:INT_MIN;
+                int rightDiff=(i+2<n)?nums[i+2]-nums[i+1]:INT_MIN;
+                if (leftDiff==INT_MIN && rightDiff==INT_MIN) {
+                    maxLen=max(maxLen,3);
+                }
+                else if (leftDiff==INT_MIN && rightDiff!=INT_MIN) {
+                    // cout<<"e ";
+                    if (rightDiff==diffNeeded) {
+                        // cout<<"f ";
+                        len+=rightConsLen[i+1];
+                        maxLen=max(maxLen,1+len);
+                    }
+                }
+                else if (leftDiff!=INT_MIN && rightDiff==INT_MIN) {
+                    // cout<<"g ";
+                    if (leftDiff==diffNeeded) {
+                        // cout<<"h ";
+                        len+=leftConsLen[i-1];
+                        maxLen=max(maxLen,1+len);
+                    }
+                }
+                else {
+                    // cout<<"i ";
+                    if (leftDiff==diffNeeded) {
+                        // cout<<"j ";
+                        len+=leftConsLen[i-1];
+                        maxLen=max(maxLen,len);
+                    }
+                    else {
+                        len++;
+                        maxLen=max(maxLen,len);
+                    }
+                    if (rightDiff==diffNeeded) {
+                        // cout<<"k ";
+                        len+=rightConsLen[i+1];
+                        maxLen=max(maxLen,len);
+                    }
+                    else {
+                        len++;
+                        maxLen=max(maxLen,len);
+                    }
+                }
+            }
+            // cout<<maxLen<<"\n";
+        }
+        return maxLen;
+    }
+};
