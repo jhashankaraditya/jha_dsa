@@ -1,0 +1,80 @@
+class Solution {
+public:
+    int minRemovals(vector<int>& nums, int target) {
+        int n=nums.size(); 
+        vector<int> left;
+        vector<int> right;
+        for (int i=0; i<n; i++) {
+            if (i<n/2) {
+                left.push_back(nums[i]);
+            }
+            else {
+                right.push_back(nums[i]);
+            }
+        }
+        int leftLen=left.size(), rightLen=right.size();
+        unordered_map<int,int> leftXorMaxSelected;
+        unordered_map<int,int> rightXorMaxSelected;
+        // cout<<leftLen<<" "<<rightLen<<"\n";
+        // cout<<"leftLen cons\n";
+        for (int i=0; i<=pow(2,leftLen)-1; i++) {
+            // cout<<"idx: "<<i<<"\n";
+            int num=i, selected=0, xorVal=0, idx=0;
+            // cout<<num<<" ";
+            while (num>0) {
+                if (num&1) {
+                    selected++;
+                    xorVal^=left[idx];
+                }
+                num>>=1;
+                idx++;
+            }
+            // cout<<xorVal<<"\n";
+            leftXorMaxSelected[xorVal]=max(leftXorMaxSelected[xorVal],selected);
+        }
+        // cout<<"rightLen cons\n";
+        for (int i=0; i<=pow(2,rightLen)-1; i++) {
+            int num=i, selected=0, xorVal=0, idx=0;
+            // cout<<num<<" ";
+            while (num>0) {
+                if (num&1) {
+                    selected++;
+                    xorVal^=right[idx];
+                }
+                num>>=1;
+                idx++;
+            }
+            // cout<<xorVal<<"\n";
+            rightXorMaxSelected[xorVal]=max(rightXorMaxSelected[xorVal],selected);
+        }
+        // cout<<"left\n";
+        // for (int i=0; i<left.size(); i++) {
+        //     cout<<left[i]<<" ";
+        // }cout<<"\n";
+        // cout<<"right\n";
+        // for (int i=0; i<right.size(); i++) {
+        //     cout<<right[i]<<" ";
+        // }cout<<"\n";
+        int maxSelected=0;
+        // cout<<"leftXorMaxSelected\n";
+        // for (auto it:leftXorMaxSelected) {
+        //     cout<<it.first<<"->"<<it.second<<"\n";
+        // }
+        // cout<<"rightXorMaxSelected\n";
+        // for (auto it:rightXorMaxSelected) {
+        //     cout<<it.first<<"->"<<it.second<<"\n";
+        // }
+        for (auto it:leftXorMaxSelected) {
+            int xorVal=it.first, leftSelected=it.second;
+            int rightXor=(target^xorVal);
+            int rightSelected=rightXorMaxSelected[rightXor];
+            if (rightSelected>0 || xorVal==target) {
+                maxSelected=max(maxSelected,leftSelected+rightSelected);
+            }
+        }
+        if (target>0 && maxSelected==0) {
+            return -1;
+        }
+        return n-maxSelected;
+    }
+};
