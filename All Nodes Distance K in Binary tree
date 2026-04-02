@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void findparent(TreeNode* root, unordered_map<TreeNode*,TreeNode*> &parent) {
+        if (root==NULL)
+            return;
+        if (root->left) {
+            parent[root->left]=root;
+            findparent(root->left,parent);
+        }
+        if (root->right) {
+            parent[root->right]=root;
+            findparent(root->right,parent);
+        }
+    }
+
+    void solve(TreeNode* target_node, int k, unordered_map<TreeNode*,TreeNode*> &parent, set<TreeNode*> &visited, vector<int> &ans) {
+        if (visited.find(target_node)!=visited.end())
+            return;
+        visited.insert(target_node);
+        if (k==0) {
+            ans.push_back(target_node->val);
+            return;
+        }
+        if (target_node->left)
+            solve(target_node->left,k-1,parent,visited,ans);
+        if (target_node->right)
+            solve(target_node->right,k-1,parent,visited,ans);
+        if (parent[target_node])
+            solve(parent[target_node],k-1,parent,visited,ans);
+    }
+
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*,TreeNode*> parent;
+        findparent(root,parent);
+        set<TreeNode*> visited;
+        vector<int> ans;
+        solve(target,k,parent,visited,ans);
+        return ans;
+    }
+};
