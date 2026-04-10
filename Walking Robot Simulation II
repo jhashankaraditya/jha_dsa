@@ -1,0 +1,81 @@
+class Robot {
+    vector<vector<int>> mat;
+    int x, y, maxHeight, maxWidth;
+    unordered_map<int,vector<int>> modPos;
+    unordered_map<int,string> modDir;
+    int totalSteps, stepsInOneRound;
+public:
+    Robot(int width, int height) {
+        maxHeight=height;
+        maxWidth=width;
+        totalSteps=0;
+        mat.resize(height);
+        for (int i=0; i<height; i++) {
+            mat[i].resize(width);
+        }
+        x=height-1;
+        y=0;
+        int count=0;
+        for (int i=0; i<width; i++) {
+            if (i==0) {
+                modDir[count]="South";
+            }
+            else modDir[count]="East";
+            modPos[count].push_back(height-1);
+            modPos[count].push_back(i);
+            cout<<count<<"->"<<modPos[count][0]<<","<<modPos[count][1]<<"\n";
+            count++;
+        }
+        for (int j=height-2; j>=0; j--) {
+            modDir[count]="North";
+            modPos[count].push_back(j);
+            modPos[count].push_back(width-1);
+            cout<<count<<"->"<<modPos[count][0]<<","<<modPos[count][1]<<"\n";
+            count++;
+        }
+        for (int i=width-2; i>=0; i--) {
+            modDir[count]="West";
+            modPos[count].push_back(0);
+            modPos[count].push_back(i);
+            cout<<count<<"->"<<modPos[count][0]<<","<<modPos[count][1]<<"\n";
+            count++;
+        }
+        for (int j=1; j<height-1; j++) {
+            modDir[count]="South";
+            modPos[count].push_back(j);
+            modPos[count].push_back(0);
+            cout<<count<<"->"<<modPos[count][0]<<","<<modPos[count][1]<<"\n";
+            count++;
+        }
+        stepsInOneRound=count;
+    }
+    
+    void step(int num) {
+        totalSteps+=num;
+    }
+    
+    vector<int> getPos() {
+        int modSteps=(totalSteps%stepsInOneRound);
+        cout<<totalSteps<<" "<<modSteps<<"\n";
+        vector<int> currPos=modPos[modSteps];
+        int x1=currPos[0], y1=currPos[1];
+        vector<int> newPos={y1,maxHeight-1-x1};
+        return newPos;
+    }
+    
+    string getDir() {
+        if (totalSteps==0) {
+            return "East";
+        }
+        int modSteps=(totalSteps%stepsInOneRound);
+        return modDir[modSteps];
+    }
+};
+
+/**
+ * Your Robot object will be instantiated and called as such:
+ * Robot* obj = new Robot(width, height);
+ * obj->step(num);
+ * vector<int> param_2 = obj->getPos();
+ * string param_3 = obj->getDir();
+ */
