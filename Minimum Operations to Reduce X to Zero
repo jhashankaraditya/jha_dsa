@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        int left=0, right=0, n=nums.size();
+        int totalSum=0, target;
+        for (int i=0; i<n; i++) {
+            totalSum+=nums[i];
+        }
+        target=totalSum-x;
+        int subarraySum=0, maxLen=-1;
+        while (right<n) {
+            subarraySum+=nums[right];
+            // cout<<"upper check: "<<left<<" "<<right<<" "<<subarraySum<<"\n";
+            while (left<=right && subarraySum>target) {
+                subarraySum-=nums[left];
+                left++;
+            }
+            // cout<<"lower check: "<<left<<" "<<right<<" "<<subarraySum<<"\n";
+            if (subarraySum==target) {
+                // cout<<"a\n";
+                maxLen=max(maxLen,right-left+1);
+                // cout<<maxLen<<"\n";
+            }
+            right++;
+        }
+        if (maxLen==-1) {
+            return -1;
+        }
+        // cout<<n<<" "<<maxLen<<"\n";
+        return n-maxLen;
+    }
+};
