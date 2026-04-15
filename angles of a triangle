@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<double> internalAngles(vector<int>& sides) {
+        int sideSum=0;
+        for (int i=0; i<3; i++) {
+            sideSum+=sides[i];
+        }
+        for (int i=0; i<3; i++) {
+            int otherSidesSum=sideSum-sides[i];
+            if (otherSidesSum<=sides[i]) {
+                return {};
+            }
+        }
+        vector<double> angles;
+        for (int i=0; i<3; i++) {
+            double currSide=sides[i], side1=0.0, side2=0.0;
+            for (int j=0; j<3; j++) {
+                if (j==i) {
+                    
+                }
+                else {
+                    if (side1==0) {
+                        side1=sides[j];
+                    }
+                    else side2=sides[j];
+                }
+            }
+            double cosVal=((side1*side1)+(side2*side2)-(currSide*currSide))/(2*side1*side2);
+            double radianAngle=acos(cosVal);
+            double angleDegrees=(radianAngle*180.0)/3.141592653589793;
+            angles.push_back(angleDegrees);
+        }
+        sort(angles.begin(),angles.end());
+        return angles;
+    }
+};
