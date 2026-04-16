@@ -1,0 +1,129 @@
+class Solution {
+public:
+    int longestBalanced(string s) {
+        int n=s.size(), maxLen=0;
+        vector<int> prefScore(n);
+        vector<int> prefZeroCount(n);
+        vector<int> prefOneCount(n);
+        for (int i=0; i<n; i++) {
+            if (s[i]=='1') {
+                if (i==0) {
+                    prefScore[i]=1;
+                    prefOneCount[i]=1;
+                }
+                else {
+                    prefScore[i]=1+prefScore[i-1];
+                    prefOneCount[i]=1+prefOneCount[i-1];
+                    prefZeroCount[i]=prefZeroCount[i-1];
+                }
+            }
+            else {
+                if (i==0) {
+                    prefScore[i]=-1;
+                    prefZeroCount[i]=1;
+                }
+                else {
+                    prefScore[i]=prefScore[i-1]-1;
+                    prefZeroCount[i]=1+prefZeroCount[i-1];
+                    prefOneCount[i]=prefOneCount[i-1];
+                }
+            }
+        }
+        unordered_map<int,int> firstOccurance;
+        firstOccurance[0]=-1;
+        for (int i=0; i<n; i++) {
+            int currScore=prefScore[i];
+            if (firstOccurance.find(currScore-2)!=firstOccurance.end()) {
+                int backIdx=firstOccurance[currScore-2];
+                int zeroCount=prefZeroCount[i];
+                if (backIdx>=0) {
+                    zeroCount-=prefZeroCount[backIdx];
+                }
+                if (zeroCount<prefZeroCount[n-1]) {
+                    maxLen=max(maxLen,i-backIdx);
+                }
+            }
+            if (firstOccurance.find(currScore+2)!=firstOccurance.end()) {
+                int backIdx=firstOccurance[currScore+2];
+                int oneCount=prefOneCount[i];
+                if (backIdx>=0) {
+                    oneCount-=prefOneCount[backIdx];
+                }
+                if (oneCount<prefOneCount[n-1]) {
+                    maxLen=max(maxLen,i-backIdx);
+                }
+            }
+            if (firstOccurance.find(currScore)==firstOccurance.end()) {
+                firstOccurance[currScore]=i;
+            }
+            else {
+                int backIdx=firstOccurance[currScore];
+                maxLen=max(maxLen,i-backIdx);
+            }
+        }
+        reverse(s.begin(),s.end());
+
+        vector<int> prefScore1(n);
+        vector<int> prefZeroCount1(n);
+        vector<int> prefOneCount1(n);
+        for (int i=0; i<n; i++) {
+            if (s[i]=='1') {
+                if (i==0) {
+                    prefScore1[i]=1;
+                    prefOneCount1[i]=1;
+                }
+                else {
+                    prefScore1[i]=1+prefScore1[i-1];
+                    prefOneCount1[i]=1+prefOneCount1[i-1];
+                    prefZeroCount1[i]=prefZeroCount1[i-1];
+                }
+            }
+            else {
+                if (i==0) {
+                    prefScore1[i]=-1;
+                    prefZeroCount1[i]=1;
+                }
+                else {
+                    prefScore1[i]=prefScore1[i-1]-1;
+                    prefZeroCount1[i]=1+prefZeroCount1[i-1];
+                    prefOneCount1[i]=prefOneCount1[i-1];
+                }
+            }
+        }
+        unordered_map<int,int> firstOccurance1;
+        firstOccurance1[0]=-1;
+        for (int i=0; i<n; i++) {
+            int currScore=prefScore1[i];
+            if (firstOccurance1.find(currScore-2)!=firstOccurance1.end()) {
+                int backIdx=firstOccurance1[currScore-2];
+                int zeroCount=prefZeroCount1[i];
+                if (backIdx>=0) {
+                    zeroCount-=prefZeroCount1[backIdx];
+                }
+                if (zeroCount<prefZeroCount1[n-1]) {
+                    maxLen=max(maxLen,i-backIdx);
+                }
+            }
+            if (firstOccurance1.find(currScore+2)!=firstOccurance1.end()) {
+                int backIdx=firstOccurance1[currScore+2];
+                int oneCount=prefOneCount1[i];
+                if (backIdx>=0) {
+                    oneCount-=prefOneCount1[backIdx];
+                }
+                if (oneCount<prefOneCount1[n-1]) {
+                    maxLen=max(maxLen,i-backIdx);
+                }
+            }
+            if (firstOccurance1.find(currScore)==firstOccurance1.end()) {
+                firstOccurance1[currScore]=i;
+            }
+            else {
+                int backIdx=firstOccurance1[currScore];
+                maxLen=max(maxLen,i-backIdx);
+            }
+        }
+
+        
+        return maxLen;
+    }
+};
