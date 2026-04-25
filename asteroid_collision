@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> stable_asteroids;
+        for (int i=0; i<asteroids.size(); i++) {
+            if (stable_asteroids.empty())
+                stable_asteroids.push(asteroids[i]);
+            else if (asteroids[i]>0)
+                stable_asteroids.push(asteroids[i]);
+            else {
+                if (stable_asteroids.top()<0)
+                    stable_asteroids.push(asteroids[i]);
+                else {
+                    while (!stable_asteroids.empty() && stable_asteroids.top()>0 && stable_asteroids.top()<asteroids[i]*(-1)) {
+                        stable_asteroids.pop();
+                    }
+                    if (!stable_asteroids.empty() && stable_asteroids.top()==asteroids[i]*(-1))
+                        stable_asteroids.pop();
+                    else if (stable_asteroids.empty()||stable_asteroids.top()<0)
+                        stable_asteroids.push(asteroids[i]);
+                }
+            }
+        }
+        stack<int> rev_arranged;
+        while (!stable_asteroids.empty()) {
+            rev_arranged.push(stable_asteroids.top());
+            stable_asteroids.pop();
+        }vector<int> ans;
+        while (!rev_arranged.empty()) {
+            ans.push_back(rev_arranged.top());
+            rev_arranged.pop();
+        }return ans;
+    }
+};
