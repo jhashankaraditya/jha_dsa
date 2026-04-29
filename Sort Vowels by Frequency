@@ -1,0 +1,61 @@
+class Solution {
+    static bool cmp(vector<int> &a, vector<int> &b) {
+        if (a[0]==b[0]) {
+            return a[1]<b[1];
+        }
+        return a[0]>b[0];
+    }
+public:
+    string sortVowels(string s) {
+        int n=s.size();
+        unordered_map<char,int> vowelFreq;
+        unordered_map<char,int> firstPos;
+        for (int i=0; i<n; i++) {
+            if (s[i]=='a' || s[i]=='e' || s[i]=='o' || s[i]=='i' || s[i]=='u') {
+                    vowelFreq[s[i]]++;
+                if (firstPos.find(s[i])==firstPos.end()) {
+                    firstPos[s[i]]=i;
+                }
+            }
+        }
+        vector<vector<int>> vowelOrder;
+        for (auto it:vowelFreq) {
+            char letter=it.first;
+            int freq=it.second, firstIdx=firstPos[letter];
+            vowelOrder.push_back({freq,firstIdx,letter-'a'});
+        }
+        sort(vowelOrder.begin(),vowelOrder.end(),cmp);
+        // cout<<"vowelFreq\n";
+        // for (auto it:vowelFreq) {
+        //     cout<<it.first<<" "<<it.second<<"\n";
+        // }
+        // cout<<"vowelOrder\n";
+        // for (int i=0; i<vowelOrder.size(); i++) {
+        //     cout<<vowelOrder[i][0]<<" "<<vowelOrder[i][1]<<" "<<vowelOrder[i][2]<<"\n";
+        // }cout<<"\n";
+        string ans;
+        int vowelIdx=0;
+        for (int i=0; i<n; i++) {
+            // cout<<i<<"\n";
+            if (s[i]=='a' || s[i]=='e' || s[i]=='o' || s[i]=='i' || s[i]=='u') {
+                char letter=vowelOrder[vowelIdx][2]+'a';
+                // cout<<"letter: "<<letter<<"\n";
+                if (vowelOrder[vowelIdx][0]<=0) {
+                    // cout<<"a\n";
+                    vowelIdx++;
+                    i--;
+                }
+                else {
+                    // cout<<"b\n";
+                    ans.push_back(letter);
+                    vowelOrder[vowelIdx][0]--;
+                }
+            }
+            else {
+                // cout<<"c\n";
+                ans.push_back(s[i]);
+            }
+        }
+        return ans;
+    }
+};
