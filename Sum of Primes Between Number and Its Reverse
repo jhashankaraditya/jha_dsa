@@ -1,0 +1,27 @@
+class Solution {
+    bool isPrime(int num) {
+        if (num<=1) {
+            return false;
+        }
+        for (int i=2; (i*i)<=num; i++) {
+            if (num%i==0) {
+                return false;
+            }
+        }
+        return true;
+    }
+public:
+    int sumOfPrimesInRange(int n) {
+        int sum=0;
+        string n_str=to_string(n);
+        reverse(n_str.begin(),n_str.end());
+        int rev=stoi(n_str);
+        int mini=min(n,rev), maxi=max(n,rev);
+        for (int i=mini; i<=maxi; i++) {
+            if (isPrime(i)) {
+                sum+=i;
+            }
+        }
+        return sum;
+    }
+};
