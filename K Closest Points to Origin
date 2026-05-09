@@ -1,0 +1,47 @@
+class Solution {
+    static bool cmp(vector<double> &a, vector<double> &b) {
+        if (a[2]==b[2]) {
+            if (a[0]==b[0]) {
+                return a[1]<b[1];
+            }
+            return a[0]<b[0];
+        }
+        return a[2]<b[2];
+    }
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        int n=points.size();
+        vector<double> distances(n);
+        vector<vector<double>> points_d(n,vector<double>(2));
+        for (int i=0; i<n; i++) {
+            // cout<<i<<" ";
+            double x=points[i][0];
+            double y=points[i][1];
+            points_d[i][0]=x;
+            points_d[i][1]=y;
+            distances[i]=sqrt(points_d[i][0]*points_d[i][0]+points_d[i][1]*points_d[i][1]);
+        }
+        // cout<<"hello ";
+        vector<vector<double>> points_dist(n);
+        for (int i=0; i<n; i++) {
+            vector<double> point_dist(3);
+            point_dist[0]=points_d[i][0];
+            point_dist[1]=points_d[i][1];
+            point_dist[2]=distances[i];
+            points_dist[i]=point_dist;
+        }
+        // cout<<"hi ";
+        sort(points_dist.begin(),points_dist.end(),cmp);
+        vector<vector<int>> ans;
+        for (int i=0; i<k; i++) {
+            // cout<<i<<" ";
+            vector<int> point_ans;
+            int x=points_dist[i][0];
+            int y=points_dist[i][1];
+            point_ans.push_back(x);
+            point_ans.push_back(y);
+            ans.push_back(point_ans);
+        }
+        return ans;
+    }
+};
