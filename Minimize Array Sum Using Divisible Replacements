@@ -1,0 +1,46 @@
+#define ll long long
+class Solution {
+public:
+    long long minArraySum(vector<int>& nums) {
+        ll int sum=0, n=nums.size();
+        unordered_map<ll int,ll int> smallestDivPresent;
+        unordered_map<ll int,ll int> numsFreq;
+        vector<ll int> distNums;
+        for (ll int i=0; i<n; i++) {
+            ll int num=nums[i];
+            numsFreq[num]++;
+        }
+        for (auto it:numsFreq) {
+            distNums.push_back(it.first);
+        }
+        sort(distNums.begin(),distNums.end());
+        for (ll int i=0; i<distNums.size(); i++) {
+            ll int num=distNums[i];
+            if (smallestDivPresent.find(num)!=smallestDivPresent.end()) {
+                sum+=(smallestDivPresent[num]*numsFreq[num]);
+            }
+            else {
+                ll int minDiv=num;
+                smallestDivPresent[num]=num;
+                for (ll int j=1; (j*j)<=num; j++) {
+                    ll int div1=j, div2=num+1;
+                    if (num%div1==0) {
+                        div2=num/j;
+                    }
+                    if (num%div1==0 && numsFreq[div1]>0) {
+                        smallestDivPresent[num]=min(div1,smallestDivPresent[num]);
+                    }
+                    if (num%div2==0 && numsFreq[div2]>0) {
+                        smallestDivPresent[num]=min(div2,smallestDivPresent[num]);
+                    }
+                }
+                if (smallestDivPresent.find(num)==smallestDivPresent.end()) {
+                    smallestDivPresent[num]=num;
+                }
+                sum+=(smallestDivPresent[num]*numsFreq[num]);
+            }
+            // cout<<num<<" "<<smallestDivPresent[num]<<"\n";
+        }
+        return sum;
+    }
+};
