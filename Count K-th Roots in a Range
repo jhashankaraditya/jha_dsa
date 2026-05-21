@@ -1,0 +1,51 @@
+class Solution {
+    int calcPow(int num, int k) {
+        long long num1=num;
+        long long int ans=num1;
+        while (k>1) {
+            ans=ans*num1;
+            if (ans>1000000000) {
+                return 1000000007;
+            }
+            k--;
+        }
+        return (int)ans;
+    }
+    
+    int findUpperRoot(int target, int k) {
+        int low=0, high=1000000000, ans=-1;
+        while (low<=high) {
+            int mid=low+(high-low)/2;
+            if (calcPow(mid,k)<target) {
+                low=mid+1;
+            }
+            else {
+                ans=mid;
+                high=mid-1;
+            }
+        }
+        return ans;
+    }
+
+    int findLowerRoot(int target, int k) {
+        int low=0, high=1000000000, ans=-1;
+        while (low<=high) {
+            int mid=low+(high-low)/2;
+            if (calcPow(mid,k)>target) {
+                high=mid-1;
+            }
+            else {
+                ans=mid;
+                low=mid+1;
+            }
+        }
+        return ans;
+    }
+    
+public:
+    int countKthRoots(int l, int r, int k) {
+        int leftRoot=findUpperRoot(l,k);
+        int rightRoot=findLowerRoot(r,k);
+        return rightRoot-leftRoot+1;
+    }
+};
