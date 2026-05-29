@@ -1,0 +1,108 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int zeroPos=-1, n=nums.size();
+        bool allCorrect=1;
+        for (int i=0; i<n; i++) {
+            if (nums[i]!=i) {
+                allCorrect=0;
+                break;
+            }
+        }
+        if (allCorrect) {
+            return 0;
+        }
+        for (int i=0; i<n; i++) {
+            if (nums[i]==0) {
+                zeroPos=i;
+                break;
+            }
+        }
+        int leftPos=-1, rightPos=-1, moves=0;
+        leftPos=(zeroPos-1+n)%n;
+        rightPos=(zeroPos+1)%n;
+        bool ansPossible=1;
+        char dir;
+        if (nums[leftPos]==1 || nums[rightPos]==1) {
+            dir=(nums[leftPos]==1)?'L':'R';
+            // cout<<"dir: "<<dir<<"\n";
+            if (dir=='L') {
+                for (int i=zeroPos; i>=0; i--) {
+                    int left=(i-1+n)%n;
+                    // cout<<i<<" ";
+                    if ((nums[left]==0 && nums[i]==n-1) || nums[left]-1==nums[i]) {
+                        // cout<<"f\n";
+                    }
+                    else {
+                        // cout<<"g\n";
+                        ansPossible=0;
+                        break;
+                    }
+                }
+                for (int i=n-1; i>zeroPos; i--) {
+                    int left=(i-1+n)%n;
+                    // cout<<i<<" ";
+                    if ((nums[left]==0 && nums[i]==n-1) || nums[left]-1==nums[i]) {
+                        // cout<<"h\n";
+                    }
+                    else {
+                        // cout<<"i\n";
+                        ansPossible=0;
+                        break;
+                    }
+                }
+            }
+            else {
+                for (int i=zeroPos; i<n; i++) {
+                    int right=(i+1)%n;
+                    // cout<<i<<" ";
+                    if (nums[right]-1==nums[i] || (nums[right]==0 && nums[i]==n-1)) {
+                        // cout<<"j\n";
+                    }
+                    else {
+                        // cout<<"k\n";
+                        ansPossible=0;
+                        break;
+                    }
+                }
+                for (int i=0; i<zeroPos; i++) {
+                    int right=(i+1)%n;
+                    // cout<<i<<" ";
+                    if (nums[right]-1==nums[i] || (nums[right]==0 && nums[i]==n-1)) {
+                        // cout<<"l\n";
+                    }
+                    else {
+                        // cout<<"m\n";
+                        ansPossible=0;
+                        break;
+                    }
+                }
+            }
+        }
+        else ansPossible=0;
+        if (!ansPossible) {
+            // cout<<"a ";
+            return -1;
+        }
+        else if (dir=='L') {
+            // cout<<"b ";
+            if (zeroPos!=n-1) {
+                // cout<<"c ";
+                int moves1=zeroPos+2;
+                int moves2=(n-zeroPos);
+                moves=min(moves1,moves2);
+            }
+            else {
+                // cout<<"d ";
+                moves=1;
+            }
+        }
+        else if (dir=='R') {
+            // cout<<"e ";
+            int moves1=zeroPos;
+            int moves2=min(zeroPos+2,n-zeroPos)+2;
+            moves=min(moves1,moves2);
+        }
+        return moves;
+    }
+};
