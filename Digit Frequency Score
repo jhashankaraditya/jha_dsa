@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int digitFrequencyScore(int n) {
+        unordered_map<int,int> numFreq;
+        while (n>0) {
+            int digit=(n%10);
+            numFreq[digit]++;
+            n/=10;
+        }
+        int score=0;
+        for (auto it:numFreq) {
+            int digit=it.first, freq=it.second;
+            score+=(digit*freq);
+        }
+        return score;
+    }
+};
