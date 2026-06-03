@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<int>> findMatrix(vector<int>& nums) {
+        unordered_map<int,int> numsFreq;
+        vector<vector<int>> mat;
+        for (int i=0; i<nums.size(); i++) {
+            numsFreq[nums[i]]++;
+        }
+        int zero=0;
+        unordered_map<int,bool> numsMarked;
+        while (numsMarked.size()<numsFreq.size()) {
+            vector<int> row;
+            // cout<<"a ";
+            for (auto it:numsFreq) {
+                // cout<<"b ";
+                int num=it.first, freq=it.second;
+                if (numsMarked.size()==numsFreq.size()) {
+                    break;
+                }
+                if (freq>0) {
+                    // cout<<num<<" "<<freq<<"\n";
+                    freq--;
+                    numsFreq[num]=freq;
+                    row.push_back(it.first);
+                    // cout<<num<<" "<<freq<<"\n";
+                }
+                else numsMarked[num]=true;
+            }
+            // cout<<"c ";
+            mat.push_back(row);
+        }
+        mat.pop_back();
+        return mat;
+    }
+};
