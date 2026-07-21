@@ -1,0 +1,40 @@
+class Solution {
+    void bfsTraverse(vector<vector<int>> &image, int x, int y, int init_color, int color) {
+        image[x][y]=color;
+        vector<int> del_row={-1,0,1,0};
+        vector<int> del_col={0,1,0,-1};
+        queue<pair<int,int>> q;
+        q.push(make_pair(x,y));
+        while (!q.empty()) {
+            pair<int,int> frontnode=q.front();
+            q.pop();
+            int row=frontnode.first;
+            int col=frontnode.second;
+            for (int i=0; i<4; i++) {
+                int new_row=row+del_row[i];
+                int new_col=col+del_col[i];
+                if (new_row<0 || new_row>=image.size() || new_col<0 || new_col>=image[0].size()) {
+                    continue;
+                }
+                if (image[new_row][new_col]==init_color) {
+                    image[new_row][new_col]=color;
+                    q.push(make_pair(new_row,new_col));
+                }
+            }
+        }
+    }
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        if (image[sr][sc]==color) {
+            return image;
+        }
+        vector<vector<int>> image_copy(image.size(),vector<int>(image[0].size()));
+        for (int i=0; i<image.size(); i++) {
+            for (int j=0; j<image[0].size(); j++) {
+                image_copy[i][j]=image[i][j];
+            }
+        }
+        bfsTraverse(image_copy,sr,sc,image_copy[sr][sc],color);
+        return image_copy;
+    }
+};
