@@ -1,0 +1,52 @@
+class Solution {
+public:
+    vector<vector<int>> aggregateTimeSeries(vector<vector<int>>& series1, vector<vector<int>>& series2) {
+        int n1=series1.size(), n2=series2.size();
+        map<int,bool> distTimeStamp;
+        // cout<<"a ";
+        for (int i=0; i<n1; i++) {
+            distTimeStamp[series1[i][0]]=1;
+        }
+        // cout<<"b ";
+        for (int i=0; i<n2; i++) {
+            distTimeStamp[series2[i][0]]=1;
+        }
+        // cout<<"c ";
+        vector<int> distSeries1(n1), distSeries2(n2);
+        for (int i=0; i<n1; i++) {
+            distSeries1[i]=series1[i][0];
+        }
+        // cout<<"d ";
+        for (int i=0; i<n2; i++) {
+            distSeries2[i]=series2[i][0];
+        }
+        // cout<<"e ";
+        sort(distSeries1.begin(),distSeries1.end());
+        sort(distSeries2.begin(),distSeries2.end());
+        // cout<<"f ";
+        vector<vector<int>> sumTimeStamp;
+        for (auto it:distTimeStamp) {
+            int timestamp=it.first;
+        // cout<<"g ";
+            int idx1=lower_bound(distSeries1.begin(),distSeries1.end(),timestamp)-distSeries1.begin();
+        // cout<<"h ";
+            int idx2=lower_bound(distSeries2.begin(),distSeries2.end(),timestamp)-distSeries2.begin();
+        // cout<<"i ";
+            int sum1=0, sum2=0;
+            if (idx1>=n1) {
+                sum1=0;
+            }
+            else sum1+=series1[idx1][1];
+            // cout<<"j ";
+            if (idx2>=n2) {
+                sum2=0;
+            }
+            else sum2+=series2[idx2][1];
+            // cout<<"k ";
+            sumTimeStamp.push_back({timestamp,sum1+sum2});
+            // cout<<"l ";
+        }
+        // cout<<"m ";
+        return sumTimeStamp;
+    }
+};
