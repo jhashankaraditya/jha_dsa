@@ -1,0 +1,18 @@
+#define ll long long
+class Solution {
+public:
+    ll int calcGcd(ll int num1, ll int num2) {
+        return __gcd(num1,num2);
+    }
+    long long maxPairStrength(vector<int>& nums) {
+        ll int maxStrength=-1, n=nums.size();
+        for (ll int i=0; i<n; i++) {
+            for (ll int j=i+1; j<n; j++) {
+                ll int num1=nums[i], num2=nums[j];
+                ll int gcd=calcGcd(num1,num2);
+                maxStrength=max(maxStrength,(num1*num2)/(gcd*gcd));
+            }
+        }
+        return maxStrength;
+    }
+};
